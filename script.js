@@ -227,8 +227,9 @@ spawnIntervalId = setInterval(() => {
         this.reward = 10;
         this.x = path[0].x;
         this.y = path[0].y;
+        this.color = 'red'; // default color
     }
-  }
+
     update() {
         if (this.f >= path.length - 1) {
             lives--;
@@ -251,14 +252,16 @@ spawnIntervalId = setInterval(() => {
 
     draw() {
         // draw body
-        ctx.fillStyle = 'red';
+        ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
         ctx.fill();
 
-        // hp bar
+        // hp bar outline
         ctx.fillStyle = 'black';
         ctx.fillRect(this.x - 10, this.y - 15, 20, 4);
+
+        // hp bar amount
         const hpWidth = (this.hp / this.maxHp) * 20;
         ctx.fillStyle = 'green';
         ctx.fillRect(this.x - 10, this.y - 15, hpWidth, 4);
