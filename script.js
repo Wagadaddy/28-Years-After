@@ -336,4 +336,4 @@ spawnIntervalId = setInterval(() => {
         if (lives>0) requestAnimationFrame(gameLoop);
         else alert("Game Over!");
     }
-}
+});
