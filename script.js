@@ -132,7 +132,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function placeTower(x,y,type){ towers.push(new Tower(x,y,type)); }
+    function placeTower(x, y, type) {
+    const cost = type === 'rifle' ? 50 : 100; // match your tower costs
+    if (money >= cost) {
+        money -= cost;
+        towers.push(new Tower(x, y, type));
+        updateUI();
+    } else {
+        alert("Not enough money!");
+    }
+}
 
     function drawPath(){
         if(!path || path.length<2) return;
