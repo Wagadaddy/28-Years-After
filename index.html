@@ -7,22 +7,35 @@
 </head>
 <body style="margin:0; padding:0; text-align:center; font-family:Arial,sans-serif;">
 
-    <!-- Night mode toggle -->
-    <button id="nightModeToggle" style="position:absolute; top:10px; right:10px; padding:5px 10px; cursor:pointer;">
-        🌙 Night Mode
-    </button>
-
     <!-- Start Menu -->
-    <div id="startMenu" style="padding:20px; border:1px solid black; display:block; margin:20px auto; width:300px;">
+    <div id="startMenu" style="padding:20px; border:1px solid black; display:block; margin:20px auto; width:320px;">
         <h1>Tower Defense Game</h1>
+
+        <!-- Map Selection -->
         <div style="margin-bottom:15px;">
             <h2>Select Map</h2>
             <button class="mapButton" id="map1" style="margin:3px; padding:5px 10px;">River Path</button>
             <button class="mapButton" id="map2" style="margin:3px; padding:5px 10px;">Full Map</button>
             <button class="mapButton" id="map3" style="margin:3px; padding:5px 10px;">Heartbeat</button>
         </div>
+
+        <!-- Start Game -->
         <button id="startGame" disabled style="padding:8px 15px; margin-bottom:10px;">Start Game</button>
+        <br>
+
+        <!-- Night & Rage Mode -->
+        <button id="nightModeToggle" style="margin:3px; padding:5px 10px;">🌙 Night Mode</button>
+        <button id="rageModeToggle" style="margin:3px; padding:5px 10px;">🔥 Rage Mode</button>
+        <br><br>
+
+        <!-- Highscore -->
+        <div id="highscore" style="margin-top:10px; font-weight:bold;">
+            Highscore: <span id="highscoreValue">0</span>
+        </div>
+
         <hr style="margin:10px 0;">
+
+        <!-- Tower selection in menu -->
         <div>
             <button id="rifleTower" data-cost="50" style="margin:3px; padding:5px 10px;">Rifle Tower ($50)</button>
             <button id="sniperTower" data-cost="100" style="margin:3px; padding:5px 10px;">Sniper Tower ($100)</button>
@@ -50,5 +63,28 @@
     </div>
 
     <script src="script.js" defer></script>
+    <script>
+        // Rage Mode button logic
+        document.getElementById('rageModeToggle').addEventListener('click', () => {
+            document.body.style.backgroundColor = '#550000';
+            document.body.style.color = '#ff9999';
+        });
+
+        // Highscore tracking
+        let highscore = 0;
+        const scoreEl = document.getElementById('score');
+        const highscoreEl = document.getElementById('highscoreValue');
+
+        function updateHighscore() {
+            const currentScore = parseInt(scoreEl.textContent);
+            if (currentScore > highscore) {
+                highscore = currentScore;
+                highscoreEl.textContent = highscore;
+            }
+        }
+
+        // Update highscore every second
+        setInterval(updateHighscore, 1000);
+    </script>
 </body>
 </html>
