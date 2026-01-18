@@ -206,7 +206,7 @@ rageBtn.addEventListener('click', () => {
     // If Dark Mode is active, turn it off
     if(document.body.classList.contains('dark')){
         document.body.classList.remove('dark');
-        nightBtn.textContent = '🌙 Night Mode';
+        nightBtn.textContent = 'Night Mode';
     }
 
     // Toggle Rage Mode
