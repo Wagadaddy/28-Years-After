@@ -265,19 +265,6 @@ spawnIntervalId = setInterval(() => {
     }
 }
 
-
-
-     // draw hp bar outline
-        ctx.fillStyle = 'white';
-        ctx.fillRect(this.x - 10, this.y - 15, 20, 4);
-
-        // draw hp amount
-        const hpWidth = (this.hp / this.maxHp) * 20;
-        ctx.fillStyle = 'black';
-        ctx.fillRect(this.x - 10, this.y - 15, hpWidth, 4);
-    
-
-
     class Tower {
         constructor(x,y,type) {
             this.x=x; this.y=y;
