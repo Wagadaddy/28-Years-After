@@ -269,7 +269,7 @@ rageBtn.onclick = () => {
         ctx.fillStyle = 'green';
         ctx.fillRect(this.x - 10, this.y - 15, hpWidth, 4);
     
-}
+
 
     class Tower {
         constructor(x,y,type) {
