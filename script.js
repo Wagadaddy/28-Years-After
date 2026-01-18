@@ -50,9 +50,9 @@ document.addEventListener("DOMContentLoaded", () => {
             {x:400,y:330},{x:500,y:280},{x:600,y:310},{x:700,y:290},{x:800,y:300}
         ],
         full: [
-            {x:0,y:300},{x:10,y:10},{x:400,y:10},{x:400,y:150},
-            {x:800,y:150},{x:800,y:300},{x:400,y:300},{x:400,y:450},
-            {x:10,y:450},{x:10,y:600},{x:800,y:600}
+            {x:0,y:300},{x:20,y:30},{x:400,y:20},{x:400,y:150},
+            {x:7800,y:150},{x:780,y:300},{x:400,y:300},{x:400,y:450},
+            {x:20,y:450},{x:20,y:600},{x:800,y:600}
         ],
         heartbeat: [
             {x:0,y:300},{x:50,y:300},{x:100,y:200},{x:150,y:400},
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ========================= */
     function resetGame() {
         lives = 20;
-        money = 100;
+        money = 90;
         wave = 1;
         score = 0;
         enemies = [];
@@ -187,22 +187,34 @@ rageBtn.onclick = () => {
        WAVES
     ========================= */
     startWaveButton.onclick = () => {
-        if (gameRunning) return;
-        gameRunning = true;
+    if (gameRunning) return;
+    gameRunning = true;
 
-        let count = 5 + wave;
-        spawnIntervalId = setInterval(() => {
-            enemies.push(new Enemy());
-            if (--count <= 0) {
-                clearInterval(spawnIntervalId);
-                spawnIntervalId = null;
-                gameRunning = false;
-            }
-        }, 800);
+    let count = Math.ceil(wave * 5); // number of enemies this wave
+    let spawned = 0;
 
-        wave++;
-        updateUI();
-    };
+    spawnIntervalId = setInterval(() => {
+        let enemy = new Enemy();
+
+        // make every 5th enemy 1.5x faster
+        if ((spawned + 1) % 5 === 0) {
+            enemy.speed *= 1.5;
+        }
+
+        enemies.push(enemy);
+        spawned++;
+
+        if (spawned >= count) {
+            clearInterval(spawnIntervalId);
+            spawnIntervalId = null;
+            gameRunning = false;
+        }
+    }, 800);
+
+    wave++;
+    updateUI();
+};
+
 
     /* =========================
        CLASSES
@@ -211,8 +223,8 @@ rageBtn.onclick = () => {
     constructor() {
         this.f = 0; // fractional index along path
         this.speed = 1; // pixels per frame
-        this.hp = 100 * (1 + 0.1 * (wave - 1)); // 10% increase per wave
-        this.maxHp = 100 * (1 + 0.1 * (wave - 1));
+        this.hp = 100 * (1 + 0.15 * (wave - 1)); // 10% increase per wave
+        this.maxHp = 100 * (1 + 0.15 * (wave - 1));
         this.reward = 10;
 
         // starting position
