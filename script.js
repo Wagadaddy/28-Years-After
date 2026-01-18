@@ -31,30 +31,31 @@ let selectedMap = null;
 // Map definitions
 const maps = {
     river: [
-        {x: 0, y: 300},
-        {x: 100, y: 280},
+        {x: 10, y: 300},
+        {x: 100, y: 50},
         {x: 200, y: 320},
         {x: 300, y: 290},
         {x: 400, y: 330},
         {x: 500, y: 280},
         {x: 600, y: 310},
         {x: 700, y: 290},
-        {x: 800, y: 300}
+        {x: 790, y: 300}
     ],
     full: [
-        {x: 0, y: 0},
-        {x: 400, y: 0},
+        {x: 10, y: 300},
+        {x: 10, y: 10},
+        {x: 400, y: 10},
         {x: 400, y: 150},
         {x: 800, y: 150},
         {x: 800, y: 300},
         {x: 400, y: 300},
         {x: 400, y: 450},
-        {x: 0, y: 450},
-        {x: 0, y: 600},
-        {x: 800, y: 600}
+        {x: 10, y: 450},
+        {x: 10, y: 600},
+        {x:790, y: 600}
     ],
     heartbeat: [
-        {x: 0, y: 300},
+        {x: 10, y: 300},
         {x: 50, y: 300},
         {x: 100, y: 200},
         {x: 150, y: 400},
@@ -70,9 +71,27 @@ const maps = {
         {x: 650, y: 300},
         {x: 700, y: 200},
         {x: 750, y: 400},
-        {x: 800, y: 300}
+        {x: 790, y: 300}
     ]
 };
+
+ //River smoothing 
+function drawSmoothPath(ctx, points) {
+    if (points.length < 2) return;
+
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+
+    for (let i = 1; i < points.length - 1; i++) {
+        const midX = (points[i].x + points[i + 1].x) / 2;
+        const midY = (points[i].y + points[i + 1].y) / 2;
+        ctx.quadraticCurveTo(points[i].x, points[i].y, midX, midY);
+    }
+
+    // Last segment
+    ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
+    ctx.stroke();
+
 
 // Current path (will be set based on selected map)
 let path = [];
@@ -295,13 +314,19 @@ if (path.length > 1) {
     ctx.strokeStyle = 'gray';
     ctx.lineWidth = 20;
     ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
 
-    ctx.beginPath();
-    ctx.moveTo(path[0].x, path[0].y);
-    for (let i = 1; i < path.length; i++) {
-        ctx.lineTo(path[i].x, path[i].y);
+    if (selectedMap === 'river') {
+        drawSmoothPath(ctx, path); // only river gets smoothing
+    } else {
+        // other maps stay jagged
+        ctx.beginPath();
+        ctx.moveTo(path[0].x, path[0].y);
+        for (let i = 1; i < path.length; i++) {
+            ctx.lineTo(path[i].x, path[i].y);
+        }
+        ctx.stroke();
     }
-    ctx.stroke();
 }
 
     // Update and draw enemies
@@ -397,6 +422,7 @@ nightModeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark');
     nightModeToggle.textContent = document.body.classList.contains('dark') ? '☀️ Day Mode' : '🌙 Night Mode';
 });
+
 
 // Start game loop
 let animationRunning = false;
