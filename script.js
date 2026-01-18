@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const isDark = document.body.classList.toggle('dark');
     
     // Update button text based on current state
-    nightBtn.textContent = isDark ? '☀️ Day Mode' : '🌙 Night Mode';
+    nightBtn.textContent = isDark ? 'Day Mode' : 'Night Mode';
 });
 
 rageBtn.addEventListener('click', () => {
