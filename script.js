@@ -187,18 +187,20 @@ rageBtn.onclick = () => {
        WAVES
     ========================= */
     startWaveButton.onclick = () => {
-    if (gameRunning) return;
-    gameRunning = true;
+    if (gameRunning) return;   // don’t start if a wave is in progress
+    if (!selectedMap) return;  // safety check
 
-    wave++; // increment wave
-    updateUI(); // refresh UI
+    gameRunning = true;        // mark that a wave is running
+    wave++;                    // increment wave counter
+    updateUI();                // refresh wave display
 
-    let count = Math.ceil(wave + 5);
+    let count = Math.ceil(wave + 5); // number of enemies this wave
     let spawned = 0;
 
     spawnIntervalId = setInterval(() => {
-        const enemy = new Enemy();
+        const enemy = new Enemy(wave); // pass wave to Enemy constructor if needed
 
+        // make every 5th enemy faster
         if ((spawned + 1) % 5 === 0) {
             enemy.speed *= 1.5;
             enemy.color = 'orange';
@@ -212,9 +214,13 @@ rageBtn.onclick = () => {
         if (spawned >= count) {
             clearInterval(spawnIntervalId);
             spawnIntervalId = null;
+
+            // don’t set gameRunning = false here! Wait until all enemies are dead
+            // gameRunning will be reset in the game loop when enemies.length === 0
         }
     }, 800);
 };
+
 
 
 
