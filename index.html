@@ -37,12 +37,20 @@
 <!-- Game container -->
 <div id="gameContainer" style="display:none; text-align:center;">
     <canvas id="gameCanvas" width="800" height="600" style="border:2px solid black; margin-top:10px;"></canvas>
+
     <div id="status" style="margin-top:8px;">
         Lives: <span id="lives">20</span> |
         Money: $<span id="money">100</span> |
         Wave: <span id="wave">1</span> |
         Score: <span id="score">0</span>
     </div>
+
+    <div id="towerSelect" style="display:flex; flex-direction:column; gap:5px; margin-top:10px;">
+        <button id="rifleTower" style="padding:5px;">Rifle Tower ($50)</button>
+        <button id="sniperTower" style="padding:5px;">Sniper Tower ($100)</button>
+    </div>
+
+    <button id="startWave" style="padding:5px; margin-top:10px;">Start Wave</button>
 </div>
 
 <script src="script.js" defer></script>
