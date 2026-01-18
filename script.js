@@ -80,15 +80,15 @@ let path = [];
 // Enemy class
 class Enemy {
     constructor() {
-        this.x = 0;
-        this.y = 300;
+        this.x = path[0].x;
+        this.y = path[0].y;
         this.speed = 1;
         this.health = 100;
         this.maxHealth = 100;
         this.pathIndex = 0;
         this.reward = 10;
     }
-
+}
     update() {
         if (this.pathIndex < path.length - 1) {
             const target = path[this.pathIndex + 1];
