@@ -5,42 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tower Defense Game — 28 Years After</title>
 </head>
-<body>
+<body style="margin:0; padding:0; text-align:center; font-family:Arial,sans-serif;">
 
     <!-- Night mode toggle -->
-    <button id="nightModeToggle">🌙 Night Mode</button>
+    <button id="nightModeToggle" style="position:absolute; top:10px; right:10px; padding:5px 10px; cursor:pointer;">
+        🌙 Night Mode
+    </button>
 
-    <!-- Start menu -->
-    <div id="startMenu">
+    <!-- Start Menu -->
+    <div id="startMenu" style="padding:20px; border:1px solid black; display:block; margin:20px auto; width:300px;">
         <h1>Tower Defense Game</h1>
-        <div>
+        <div style="margin-bottom:15px;">
             <h2>Select Map</h2>
-            <button class="mapButton" id="map1">River Path</button>
-            <button class="mapButton" id="map2">Full Map</button>
-            <button class="mapButton" id="map3">Heartbeat</button>
+            <button class="mapButton" id="map1" style="margin:3px; padding:5px 10px;">River Path</button>
+            <button class="mapButton" id="map2" style="margin:3px; padding:5px 10px;">Full Map</button>
+            <button class="mapButton" id="map3" style="margin:3px; padding:5px 10px;">Heartbeat</button>
         </div>
-        <button id="startGame" disabled>Start Game</button>
-        <hr>
+        <button id="startGame" disabled style="padding:8px 15px; margin-bottom:10px;">Start Game</button>
+        <hr style="margin:10px 0;">
         <div>
-            <button id="rifleTower" data-cost="50">Rifle Tower ($50)</button>
-            <button id="sniperTower" data-cost="100">Sniper Tower ($100)</button>
+            <button id="rifleTower" data-cost="50" style="margin:3px; padding:5px 10px;">Rifle Tower ($50)</button>
+            <button id="sniperTower" data-cost="100" style="margin:3px; padding:5px 10px;">Sniper Tower ($100)</button>
         </div>
     </div>
 
-    <!-- Game container -->
-    <div id="gameContainer">
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
-        <div id="ui">
-            <div id="stats">
+    <!-- Game Container -->
+    <div id="gameContainer" style="display:none; margin-top:10px; text-align:center;">
+        <canvas id="gameCanvas" width="800" height="600" style="border:2px solid black; display:block; margin:0 auto;"></canvas>
+
+        <!-- UI Panel -->
+        <div id="ui" style="margin-top:10px; border:1px solid black; display:inline-block; padding:10px;">
+            <div id="stats" style="margin-bottom:5px;">
                 Lives: <span id="lives">20</span> |
                 Money: $<span id="money">100</span> |
                 Wave: <span id="wave">1</span> |
                 Score: <span id="score">0</span>
             </div>
-            <button id="startWave">Start Wave</button>
-            <div id="towerSelect">
-                <button id="rifleTower2" data-cost="50">Rifle Tower ($50)</button>
-                <button id="sniperTower2" data-cost="100">Sniper Tower ($100)</button>
+            <button id="startWave" style="margin:3px; padding:5px 10px;">Start Wave</button>
+            <div id="towerSelect" style="margin-top:5px;">
+                <button id="rifleTower2" data-cost="50" style="margin:3px; padding:5px 10px;">Rifle Tower ($50)</button>
+                <button id="sniperTower2" data-cost="100" style="margin:3px; padding:5px 10px;">Sniper Tower ($100)</button>
             </div>
         </div>
     </div>
