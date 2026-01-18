@@ -291,13 +291,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    function selectMap(mapKey){
-        selectedMap=mapKey;
-        path=maps[mapKey];
-        document.querySelectorAll('.mapButton').forEach(b=>b.classList.remove('selected'));
-        document.getElementById('map'+(Object.keys(maps).indexOf(mapKey)+1)).classList.add('selected');
-        startGameButton.disabled=false;
-    }
+    function selectMap(mapKey) {
+    selectedMap = mapKey;
+
+    // Correct assignment — select the array of points for that map
+    path = maps[mapKey];
+
+    // Update UI to show which map is selected
+    document.querySelectorAll('.mapButton').forEach(btn => btn.classList.remove('selected'));
+    document.getElementById('map' + (Object.keys(maps).indexOf(mapKey) + 1)).classList.add('selected');
+
+    // Enable the Start Game button
+    startGameButton.disabled = false;
+}
 
     map1Button.addEventListener('click',()=>selectMap('river'));
     map2Button.addEventListener('click',()=>selectMap('full'));
