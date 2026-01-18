@@ -1,49 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tower Defense Game — 28 Years After</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower Defense Game — 28 Years After</title>
 </head>
-<body style="margin:0; padding:0; font-family:Arial,sans-serif; background-color:#f0f0f0;">
+<body>
 
-<!-- Night Mode toggle -->
-<button id="nightModeToggle" style="position:absolute; top:10px; right:10px; padding:5px 10px; cursor:pointer;">🌙 Day/Night</button>
+    <!-- Night mode toggle -->
+    <button id="nightModeToggle">🌙 Night Mode</button>
 
-<!-- Start Menu -->
-<div id="startMenu" style="position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.8); display:flex; justify-content:center; align-items:center; z-index:1000;">
-    <div id="startMenuContent" style="background-color:#fff; padding:40px; border-radius:10px; text-align:center;">
+    <!-- Start menu -->
+    <div id="startMenu">
         <h1>Tower Defense Game</h1>
-        <div id="mapSelection" style="margin-bottom:20px;">
+        <div>
             <h2>Select Map</h2>
-            <button id="map1" style="display:block; width:200px; margin:5px auto; padding:8px 15px;">River Path</button>
-            <button id="map2" style="display:block; width:200px; margin:5px auto; padding:8px 15px;">Full Map</button>
-            <button id="map3" style="display:block; width:200px; margin:5px auto; padding:8px 15px;">Heartbeat</button>
+            <button class="mapButton" id="map1">River Path</button>
+            <button class="mapButton" id="map2">Full Map</button>
+            <button class="mapButton" id="map3">Heartbeat</button>
         </div>
-        <button id="startGame" disabled style="padding:10px 20px; font-size:1.2em; margin:10px; cursor:pointer; border:none; border-radius:5px; background-color:#4CAF50; color:white;">Start Game</button>
-        <div id="towerSelect" style="margin-top:10px;">
-            <button id="rifleTower" style="display:block; width:100px; margin:5px auto;">Rifle Tower ($50)</button>
-            <button id="sniperTower" style="display:block; width:100px; margin:5px auto;">Sniper Tower ($100)</button>
+        <button id="startGame" disabled>Start Game</button>
+        <hr>
+        <div>
+            <button id="rifleTower" data-cost="50">Rifle Tower ($50)</button>
+            <button id="sniperTower" data-cost="100">Sniper Tower ($100)</button>
         </div>
     </div>
-</div>
 
-<!-- Game Container -->
-<div id="gameContainer" style="display:none; position:relative;">
-    <canvas id="gameCanvas" width="800" height="600" style="border:2px solid #333; background-color:#90EE90; display:block; margin:20px auto;"></canvas>
-    <div id="ui" style="position:absolute; top:10px; left:10px; background-color:rgba(255,255,255,0.8); padding:10px; border-radius:5px; text-align:left;">
-        <div id="stats">
-            <span id="lives">Lives: 20</span><br>
-            <span id="money">Money: $100</span><br>
-            <span id="wave">Wave: 1</span><br>
-            <span id="score">Score: 0</span>
+    <!-- Game container -->
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="ui">
+            <div id="stats">
+                Lives: <span id="lives">20</span> |
+                Money: $<span id="money">100</span> |
+                Wave: <span id="wave">1</span> |
+                Score: <span id="score">0</span>
+            </div>
+            <button id="startWave">Start Wave</button>
+            <div id="towerSelect">
+                <button id="rifleTower2" data-cost="50">Rifle Tower ($50)</button>
+                <button id="sniperTower2" data-cost="100">Sniper Tower ($100)</button>
+            </div>
         </div>
-        <button id="startWave" style="margin-top:5px;">Start Wave</button>
     </div>
-</div>
 
-<!-- Link to your JS -->
-<script src="script.js" defer></script>
-
+    <script src="script.js" defer></script>
 </body>
 </html>
