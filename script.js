@@ -385,6 +385,7 @@ startGameButton.addEventListener('click', () => {
     if (selectedMap) {
         startMenu.style.display = 'none';
         gameContainer.classList.add('active');
+        startGameLoop(); // ✅ start only now
     }
 });
 
@@ -394,10 +395,11 @@ nightModeToggle.addEventListener('click', () => {
 });
 
 // Start game loop
-let animationId = null;
+let animationRunning = false;
 
 function startGameLoop() {
-    if (!animationId) {
-        animationId = requestAnimationFrame(gameLoop);
+    if (!animationRunning) {
+        animationRunning = true;
+        requestAnimationFrame(gameLoop);
     }
 }
