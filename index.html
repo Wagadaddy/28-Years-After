@@ -13,7 +13,7 @@
     <!-- Start Game -->
     <button id="startGame" disabled style="padding:8px 15px; margin-top:10px;">Start Game</button>
 
-    <!-- Night Mode & Rage Mode -->
+    <!-- Night / Rage Modes -->
     <div style="display:flex; gap:5px; margin-top:10px;">
         <button id="nightModeToggle" style="padding:5px;">🌙 Night Mode</button>
         <button id="rageModeToggle" style="padding:5px;">🔥 Rage Mode</button>
@@ -23,19 +23,10 @@
     <div id="highscore" style="margin-top:10px; font-weight:bold;">
         Highscore: <span id="highscoreValue">0</span>
     </div>
-
-    <!-- Tower Buttons -->
-    <div id="towerSelect" style="display:flex; flex-direction:column; gap:5px; margin-top:10px;">
-        <button id="rifleTower" style="padding:5px;">Rifle Tower ($50)</button>
-        <button id="sniperTower" style="padding:5px;">Sniper Tower ($100)</button>
-    </div>
-
-    <!-- Start Wave Button -->
-    <button id="startWave" style="padding:5px; margin-top:10px;">Start Wave</button>
 </div>
 
-<!-- Game container -->
-<div id="gameContainer" style="display:none; text-align:center;">
+
+    <div id="gameContainer" style="display:none; text-align:center;">
     <canvas id="gameCanvas" width="800" height="600" style="border:2px solid black; margin-top:10px;"></canvas>
 
     <div id="status" style="margin-top:8px;">
@@ -45,6 +36,7 @@
         Score: <span id="score">0</span>
     </div>
 
+    <!-- Tower buttons only visible during gameplay -->
     <div id="towerSelect" style="display:flex; flex-direction:column; gap:5px; margin-top:10px;">
         <button id="rifleTower" style="padding:5px;">Rifle Tower ($50)</button>
         <button id="sniperTower" style="padding:5px;">Sniper Tower ($100)</button>
