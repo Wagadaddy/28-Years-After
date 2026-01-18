@@ -213,6 +213,38 @@ rageBtn.addEventListener('click', () => {
     const isRage = document.body.classList.toggle('rage');
 });
 
+    //Return to Menu button reset
+const mainMenuBtn = document.getElementById('mainMenuBtn');
+
+mainMenuBtn.addEventListener('click', () => {
+    // Stop the game loop
+    gameRunning = false;
+
+    // Clear arrays
+    enemies = [];
+    towers = [];
+    projectiles = [];
+
+    // Reset variables
+    lives = 20;
+    money = 100;
+    wave = 1;
+    score = 0;
+    selectedTowerType = null;
+    selectedMap = null;
+    path = [];
+
+    // Update UI
+    updateUI();
+
+    // Show start menu
+    startMenu.style.display = 'block';
+    gameContainer.style.display = 'none';
+
+    // Reset map buttons
+    document.querySelectorAll('.mapButton').forEach(btn => btn.classList.remove('selected'));
+    startGameButton.disabled = true;
+});
 
 
     // --- Highscore updater ---
