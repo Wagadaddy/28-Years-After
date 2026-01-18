@@ -1,13 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // --- Elements ---
+    /* =========================
+       DOM ELEMENTS
+    ========================= */
     const startMenu = document.getElementById('startMenu');
     const gameContainer = document.getElementById('gameContainer');
     const startGameButton = document.getElementById('startGame');
+    const startWaveButton = document.getElementById('startWave');
+    const mainMenuBtn = document.getElementById('mainMenuBtn');
 
     const nightBtn = document.getElementById('nightModeToggle');
     const rageBtn = document.getElementById('rageModeToggle');
-    const highscoreEl = document.getElementById('highscoreValue');
 
     const map1Button = document.getElementById('map1');
     const map2Button = document.getElementById('map2');
@@ -15,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const rifleTowerButton = document.getElementById('rifleTower');
     const sniperTowerButton = document.getElementById('sniperTower');
-    const startWaveButton = document.getElementById('startWave');
 
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
@@ -24,235 +26,274 @@ document.addEventListener("DOMContentLoaded", () => {
     const moneyElement = document.getElementById('money');
     const waveElement = document.getElementById('wave');
     const scoreElement = document.getElementById('score');
+    const highscoreEl = document.getElementById('highscoreValue');
 
-    // --- Game variables ---
-    let lives = 20;
-    let money = 100;
-    let wave = 1;
-    let score = 0;
-    let highscore = 0;
-    let enemies = [];
-    let towers = [];
-    let projectiles = [];
-    let gameRunning = false;
+    /* =========================
+       GAME STATE
+    ========================= */
+    let lives, money, wave, score;
+    let enemies, towers, projectiles;
     let selectedTowerType = null;
     let selectedMap = null;
     let path = [];
+    let gameRunning = false;
+    let spawnIntervalId = null;
     let lastTime = 0;
+    let highscore = 0;
 
-    // --- Maps ---
+    /* =========================
+       MAPS
+    ========================= */
     const maps = {
         river: [
-            {x:10,y:300},{x:100,y:50},{x:200,y:320},{x:300,y:290},{x:400,y:330},
-            {x:500,y:280},{x:600,y:310},{x:700,y:290},{x:790,y:300}
+            {x:10,y:300},{x:100,y:50},{x:200,y:320},{x:300,y:290},
+            {x:400,y:330},{x:500,y:280},{x:600,y:310},{x:700,y:290},{x:790,y:300}
         ],
         full: [
-            {x:10,y:300},{x:10,y:10},{x:400,y:10},{x:400,y:150},{x:800,y:150},
-            {x:800,y:300},{x:400,y:300},{x:400,y:450},{x:10,y:450},{x:10,y:600},{x:790,y:600}
+            {x:10,y:300},{x:10,y:10},{x:400,y:10},{x:400,y:150},
+            {x:800,y:150},{x:800,y:300},{x:400,y:300},{x:400,y:450},
+            {x:10,y:450},{x:10,y:600},{x:790,y:600}
         ],
         heartbeat: [
-            {x:10,y:300},{x:50,y:300},{x:100,y:200},{x:150,y:400},{x:200,y:300},
-            {x:250,y:300},{x:300,y:300},{x:350,y:300},{x:400,y:200},{x:450,y:400},
-            {x:500,y:300},{x:550,y:300},{x:600,y:300},{x:650,y:300},{x:700,y:200},
-            {x:750,y:400},{x:790,y:300}
+            {x:10,y:300},{x:50,y:300},{x:100,y:200},{x:150,y:400},
+            {x:200,y:300},{x:300,y:300},{x:400,y:200},{x:450,y:400},
+            {x:500,y:300},{x:600,y:300},{x:700,y:200},{x:790,y:300}
         ]
     };
 
-    // --- Classes ---
-    class Enemy {
-        constructor(){
-            this.x=path[0].x; this.y=path[0].y;
-            this.speed=1; this.health=100; this.maxHealth=100;
-            this.pathIndex=0; this.reward=10;
+    /* =========================
+       RESET GAME
+    ========================= */
+    function resetGame() {
+        lives = 20;
+        money = 100;
+        wave = 1;
+        score = 0;
+        enemies = [];
+        towers = [];
+        projectiles = [];
+        selectedTowerType = null;
+        gameRunning = false;
+        lastTime = 0;
+
+        if (spawnIntervalId) {
+            clearInterval(spawnIntervalId);
+            spawnIntervalId = null;
         }
-        update(){
-            if(this.pathIndex < path.length-1){
-                const target = path[this.pathIndex+1];
-                const dx = target.x - this.x;
-                const dy = target.y - this.y;
-                const distance = Math.sqrt(dx*dx + dy*dy);
-                if(distance<this.speed){
-                    this.pathIndex++;
-                    if(this.pathIndex >= path.length-1){ lives--; this.health=0; updateUI(); }
-                } else { this.x += dx/distance*this.speed; this.y += dy/distance*this.speed; }
+
+        updateUI();
+    }
+
+    /* =========================
+       UI
+    ========================= */
+    function updateUI() {
+        livesElement.textContent = lives;
+        moneyElement.textContent = money;
+        waveElement.textContent = wave;
+        scoreElement.textContent = score;
+
+        if (score > highscore) {
+            highscore = score;
+            highscoreEl.textContent = highscore;
+        }
+    }
+
+    /* =========================
+       MAP SELECTION
+    ========================= */
+    function selectMap(mapKey) {
+        selectedMap = mapKey;
+        path = maps[mapKey];
+
+        document.querySelectorAll('.mapButton')
+            .forEach(btn => btn.classList.remove('selected'));
+
+        document.getElementById(
+            mapKey === 'river' ? 'map1' :
+            mapKey === 'full' ? 'map2' : 'map3'
+        ).classList.add('selected');
+
+        startGameButton.disabled = false;
+    }
+
+    map1Button.onclick = () => selectMap('river');
+    map2Button.onclick = () => selectMap('full');
+    map3Button.onclick = () => selectMap('heartbeat');
+
+    /* =========================
+       START GAME
+    ========================= */
+    startGameButton.onclick = () => {
+        if (!selectedMap) return;
+        resetGame();
+        startMenu.style.display = 'none';
+        gameContainer.style.display = 'block';
+        requestAnimationFrame(gameLoop);
+    };
+
+    mainMenuBtn.onclick = () => {
+        resetGame();
+        startMenu.style.display = 'block';
+        gameContainer.style.display = 'none';
+        selectedMap = null;
+        path = [];
+        startGameButton.disabled = true;
+    };
+
+    /* =========================
+       MODES
+    ========================= */
+    nightBtn.onclick = () => {
+        document.body.classList.remove('rage');
+        const isDark = document.body.classList.toggle('dark');
+        nightBtn.textContent = isDark ? '☀️ Day Mode' : '🌙 Night Mode';
+    };
+
+    rageBtn.onclick = () => {
+        document.body.classList.remove('dark');
+        document.body.classList.toggle('rage');
+        nightBtn.textContent = '🌙 Night Mode';
+    };
+
+    /* =========================
+       TOWERS
+    ========================= */
+    rifleTowerButton.onclick = () => selectedTowerType = 'rifle';
+    sniperTowerButton.onclick = () => selectedTowerType = 'sniper';
+
+    canvas.onclick = e => {
+        if (!selectedTowerType) return;
+
+        const cost = selectedTowerType === 'rifle' ? 50 : 100;
+        if (money < cost) return;
+
+        const rect = canvas.getBoundingClientRect();
+        towers.push(new Tower(
+            e.clientX - rect.left,
+            e.clientY - rect.top,
+            selectedTowerType
+        ));
+
+        money -= cost;
+        selectedTowerType = null;
+        updateUI();
+    };
+
+    /* =========================
+       WAVES
+    ========================= */
+    startWaveButton.onclick = () => {
+        if (gameRunning) return;
+        gameRunning = true;
+
+        let count = wave * 5;
+        spawnIntervalId = setInterval(() => {
+            enemies.push(new Enemy());
+            if (--count <= 0) {
+                clearInterval(spawnIntervalId);
+                spawnIntervalId = null;
+                gameRunning = false;
             }
+        }, 800);
+
+        wave++;
+        updateUI();
+    };
+
+    /* =========================
+       CLASSES
+    ========================= */
+    class Enemy {
+        constructor() {
+            this.x = path[0].x;
+            this.y = path[0].y;
+            this.i = 0;
+            this.speed = 1;
+            this.hp = 100;
+            this.reward = 10;
         }
-        draw(){
-            ctx.fillStyle='red'; ctx.fillRect(this.x-10,this.y-10,20,20);
-            ctx.fillStyle='black'; ctx.fillRect(this.x-10,this.y-15,20,3);
-            ctx.fillStyle='green'; ctx.fillRect(this.x-10,this.y-15,(this.health/this.maxHealth)*20,3);
+        update() {
+            const t = path[this.i + 1];
+            if (!t) { lives--; this.hp = 0; return; }
+            const dx = t.x - this.x, dy = t.y - this.y;
+            const d = Math.hypot(dx, dy);
+            if (d < this.speed) this.i++;
+            else { this.x += dx/d*this.speed; this.y += dy/d*this.speed; }
+        }
+        draw() {
+            ctx.fillStyle = 'red';
+            ctx.fillRect(this.x-10, this.y-10, 20, 20);
         }
     }
 
     class Tower {
-        constructor(x,y,type){ this.x=x; this.y=y; this.type=type;
-            this.range=type==='rifle'?100:150;
-            this.damage=type==='rifle'?25:50;
-            this.fireRate=type==='rifle'?500:1000;
-            this.lastFired=0;
+        constructor(x,y,type) {
+            this.x=x; this.y=y;
+            this.range = type==='rifle'?120:170;
+            this.damage = type==='rifle'?25:50;
+            this.rate = type==='rifle'?500:900;
+            this.last=0;
         }
-        update(currentTime){
-            if(currentTime - this.lastFired > this.fireRate){
-                const target = this.findTarget();
-                if(target){ projectiles.push(new Projectile(this.x,this.y,target,this.damage)); this.lastFired=currentTime; }
+        update(t) {
+            if (t-this.last < this.rate) return;
+            const e = enemies.find(e=>Math.hypot(e.x-this.x,e.y-this.y)<=this.range);
+            if (e) {
+                projectiles.push(new Projectile(this.x,this.y,e,this.damage));
+                this.last=t;
             }
         }
-        findTarget(){ for(let e of enemies){ const dx=e.x-this.x, dy=e.y-this.y; if(Math.sqrt(dx*dx+dy*dy)<=this.range) return e; } return null; }
-        draw(){
-            ctx.fillStyle=this.type==='rifle'?'blue':'purple';
-            ctx.fillRect(this.x-15,this.y-15,30,30);
-            ctx.strokeStyle='rgba(0,0,255,0.2)'; ctx.beginPath(); ctx.arc(this.x,this.y,this.range,0,2*Math.PI); ctx.stroke();
+        draw() {
+            ctx.fillStyle='blue';
+            ctx.fillRect(this.x-12,this.y-12,24,24);
         }
     }
 
     class Projectile {
-        constructor(x,y,target,damage){ this.x=x; this.y=y; this.target=target; this.damage=damage; this.speed=5; }
-        update(){
-            const dx=this.target.x-this.x, dy=this.target.y-this.y;
-            const distance=Math.sqrt(dx*dx+dy*dy);
-            if(distance<this.speed){ this.target.health-=this.damage; if(this.target.health<=0){ money+=this.target.reward; score+=this.target.reward; updateUI(); } return true; }
-            else { this.x+=dx/distance*this.speed; this.y+=dy/distance*this.speed; } return false;
+        constructor(x,y,t,d){this.x=x;this.y=y;this.t=t;this.d=d;this.s=5;}
+        update() {
+            const dx=this.t.x-this.x, dy=this.t.y-this.y;
+            const dist=Math.hypot(dx,dy);
+            if (dist<this.s) {
+                this.t.hp-=this.d;
+                if(this.t.hp<=0){money+=this.t.reward;score+=this.t.reward;}
+                return true;
+            }
+            this.x+=dx/dist*this.s; this.y+=dy/dist*this.s;
+            return false;
         }
-        draw(){ ctx.fillStyle='yellow'; ctx.beginPath(); ctx.arc(this.x,this.y,3,0,2*Math.PI); ctx.fill(); }
+        draw(){ctx.fillStyle='yellow';ctx.fillRect(this.x-2,this.y-2,4,4);}
     }
 
-    // --- Functions ---
-    function updateUI(){ livesElement.textContent=lives; moneyElement.textContent=money; waveElement.textContent=wave; scoreElement.textContent=score; }
-    function spawnEnemy(){ enemies.push(new Enemy()); }
-
-    function startWave(){
-        if(!gameRunning){
-            gameRunning=true;
-            let enemyCount = wave*5;
-            const interval = setInterval(()=>{
-                spawnEnemy(); enemyCount--;
-                if(enemyCount<=0){ clearInterval(interval); gameRunning=false; }
-            },1000);
-            wave++; updateUI();
+    /* =========================
+       PATH DRAWING
+    ========================= */
+    function drawPath() {
+        if (path.length<2) return;
+        ctx.strokeStyle='gray'; ctx.lineWidth=18;
+        ctx.beginPath(); ctx.moveTo(path[0].x,path[0].y);
+        for(let i=1;i<path.length;i++){
+            selectedMap==='river'
+                ? ctx.quadraticCurveTo(path[i-1].x,path[i-1].y,path[i].x,path[i].y)
+                : ctx.lineTo(path[i].x,path[i].y);
         }
-    }
-
-    function placeTower(x, y, type) {
-    const cost = type === 'rifle' ? 50 : 100; // match your tower costs
-    if (money >= cost) {
-        money -= cost;
-        towers.push(new Tower(x, y, type));
-        updateUI();
-    } else {
-        alert("Not enough money!");
-    }
-}
-
-    function drawPath(){
-        if(!path || path.length<2) return;
-        ctx.strokeStyle='gray'; ctx.lineWidth=20; ctx.beginPath();
-        ctx.moveTo(path[0].x,path[0].y);
-        if(selectedMap==='river'){ for(let i=1;i<path.length;i++){ const prev=path[i-1], curr=path[i]; ctx.quadraticCurveTo(prev.x,prev.y,curr.x,curr.y); } }
-        else{ for(let i=1;i<path.length;i++){ ctx.lineTo(path[i].x,path[i].y); } }
         ctx.stroke();
     }
 
-    function gameLoop(currentTime){
-        const deltaTime=currentTime-lastTime; lastTime=currentTime;
+    /* =========================
+       GAME LOOP
+    ========================= */
+    function gameLoop(t) {
         ctx.clearRect(0,0,canvas.width,canvas.height);
         drawPath();
-        enemies=enemies.filter(e=>{ e.update(); e.draw(); return e.health>0; });
-        towers.forEach(t=>{ t.update(currentTime); t.draw(); });
-        projectiles=projectiles.filter(p=>{ const hit=p.update(); p.draw(); return !hit; });
-        if(lives<=0){ alert('Game Over!'); window.location.reload(); }
-        requestAnimationFrame(gameLoop);
+
+        enemies = enemies.filter(e=>{e.update();e.draw();return e.hp>0;});
+        towers.forEach(tw=>{tw.update(t);tw.draw();});
+        projectiles = projectiles.filter(p=>{const h=p.update();p.draw();return !h;});
+
+        updateUI();
+        if (lives>0) requestAnimationFrame(gameLoop);
+        else alert("Game Over!");
     }
 
-    function startGameLoop(){ lastTime=performance.now(); requestAnimationFrame(gameLoop); }
-
-    // --- Event Listeners ---
-    map1Button.addEventListener('click',()=>{ selectedMap='river'; path=maps['river']; startGameButton.disabled=false; });
-    map2Button.addEventListener('click',()=>{ selectedMap='full'; path=maps['full']; startGameButton.disabled=false; });
-    map3Button.addEventListener('click',()=>{ selectedMap='heartbeat'; path=maps['heartbeat']; startGameButton.disabled=false; });
-
-    startGameButton.addEventListener('click',()=>{
-        if(!selectedMap) return;
-        startMenu.style.display='none';
-        gameContainer.style.display='block';
-        startGameLoop();
-    });
-
-    rifleTowerButton.addEventListener('click',()=>selectedTowerType='rifle');
-    sniperTowerButton.addEventListener('click',()=>selectedTowerType='sniper');
-    startWaveButton.addEventListener('click',startWave);
-
-    canvas.addEventListener('click',(e)=>{
-        if(selectedTowerType){
-            const rect=canvas.getBoundingClientRect();
-            placeTower(e.clientX-rect.left,e.clientY-rect.top,selectedTowerType);
-            selectedTowerType=null;
-        }
-    });
-
-    nightBtn.addEventListener('click', () => {
-    // If Rage Mode is active, turn it off
-    if(document.body.classList.contains('rage')){
-        document.body.classList.remove('rage');
-    }
-
-    // Toggle Dark Mode
-    const isDark = document.body.classList.toggle('dark');
-    
-    // Update button text based on current state
-    nightBtn.textContent = isDark ? 'Day Mode' : 'Night Mode';
 });
-
-rageBtn.addEventListener('click', () => {
-    // If Dark Mode is active, turn it off
-    if(document.body.classList.contains('dark')){
-        document.body.classList.remove('dark');
-        nightBtn.textContent = 'Night Mode';
-    }
-
-    // Toggle Rage Mode
-    const isRage = document.body.classList.toggle('rage');
-});
-
-    //Return to Menu button reset
-const mainMenuBtn = document.getElementById('mainMenuBtn');
-
-mainMenuBtn.addEventListener('click', () => {
-    // Stop the game loop
-    gameRunning = false;
-
-    // Clear arrays
-    enemies = [];
-    towers = [];
-    projectiles = [];
-
-    // Reset variables
-    lives = 20;
-    money = 100;
-    wave = 1;
-    score = 0;
-    selectedTowerType = null;
-    selectedMap = null;
-    path = [];
-
-    // Update UI
-    updateUI();
-
-    // Show start menu
-    startMenu.style.display = 'block';
-    gameContainer.style.display = 'none';
-
-    // Reset map buttons
-    document.querySelectorAll('.mapButton').forEach(btn => btn.classList.remove('selected'));
-    startGameButton.disabled = true;
-});
-
-
-    // --- Highscore updater ---
-    setInterval(()=>{
-        if(gameContainer.style.display!=='none'){
-            if(score>highscore){ highscore=score; highscoreEl.textContent=highscore; }
-        }
-    },500);
-
-});
-
