@@ -240,24 +240,24 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
     ctx.fill();
 
-    // draw health bar background
+    // draw hp bar background
     ctx.fillStyle = 'black';
     ctx.fillRect(this.x - 12, this.y - 18, 24, 4);
 
-    // draw health amount
-    const healthWidth = (this.hp / this.maxHp) * 24;
+    // draw hp amount
+    const hpWidth = (this.hp / this.maxHp) * 24;
     ctx.fillStyle = 'lime';
-    ctx.fillRect(this.x - 12, this.y - 18, healthWidth, 4);
+    ctx.fillRect(this.x - 12, this.y - 18, hpWidth, 4);
     }
 
-        // draw health bar outline
+        // draw hp bar outline
         ctx.fillStyle = 'black';
         ctx.fillRect(this.x - 10, this.y - 15, 20, 4);
 
-        // draw health amount
-        const healthWidth = (this.hp / this.maxHp) * 20;
+        // draw hp amount
+        const hpWidth = (this.hp / this.maxHp) * 20;
         ctx.fillStyle = 'green';
-        ctx.fillRect(this.x - 10, this.y - 15, healthWidth, 4);
+        ctx.fillRect(this.x - 10, this.y - 15, hpWidth, 4);
     }
 }
 
