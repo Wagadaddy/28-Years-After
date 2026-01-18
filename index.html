@@ -7,36 +7,40 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="startMenu">
-  <h1>28-Years-After</h1>
-  <div id="mapSelection">
-    <button id="map1" class="mapButton">River</button>
-    <button id="map2" class="mapButton">Full</button>
-    <button id="map3" class="mapButton">Heartbeat</button>
-  </div>
-  <button id="startGame" disabled>Start Game</button>
-</div>
-
-<div id="gameContainer" style="display:none">
-  <canvas id="gameCanvas"></canvas>
-
-  <div id="controls">
-    <button id="rifleTower">Rifle Tower</button>
-    <button id="sniperTower">Sniper Tower</button>
-    <button id="startWave">Start Wave</button>
-    <button id="nightModeToggle">Night Mode</button>
-    <button id="mainMenuBtn">Main Menu</button>
+  <div id="startMenu">
+    <h1>28-Years-After</h1>
+    <div id="mapSelection">
+      <button id="map1" class="mapButton">River</button>
+      <button id="map2" class="mapButton">Full</button>
+      <button id="map3" class="mapButton">Heartbeat</button>
+    </div>
+    <button id="startGame" disabled>Start Game</button>
   </div>
 
-  <div id="ui">
-    <span>Lives: <span id="lives"></span></span>
-    <span>Money: <span id="money"></span></span>
-    <span>Wave: <span id="wave"></span></span>
-    <span>Score: <span id="score"></span></span>
-    <span>Highscore: <span id="highscoreValue"></span></span>
+  <div id="gameContainer" style="display:none">
+    <div id="canvasWrapper">
+      <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <div id="controls">
+      <button id="rifleTower">Rifle Tower</button>
+      <button id="sniperTower">Sniper Tower</button>
+      <button id="startWave">Start Wave</button>
+      <button id="nightModeToggle">Night Mode</button>
+      <button id="rageModeToggle">Rage Mode</button>
+      <button id="mainMenuBtn">Main Menu</button>
+    </div>
+
+    <div id="ui">
+      <span>Lives: <span id="lives"></span></span>
+      <span>Money: <span id="money"></span></span>
+      <span>Wave: <span id="wave"></span></span>
+      <span>Score: <span id="score"></span></span>
+      <span>Highscore: <span id="highscoreValue"></span></span>
+    </div>
   </div>
-</div>
 
 <script src="game.js"></script>
 </body>
 </html>
+
