@@ -190,7 +190,7 @@ rageBtn.onclick = () => {
         if (gameRunning) return;
         gameRunning = true;
 
-        let count = wave * 5;
+        let count = 5 + wave;
         spawnIntervalId = setInterval(() => {
             enemies.push(new Enemy());
             if (--count <= 0) {
@@ -207,35 +207,38 @@ rageBtn.onclick = () => {
     /* =========================
        CLASSES
     ========================= */
-   class Enemy {
+  class Enemy {
     constructor() {
-        this.x = path[0].x;
-        this.y = path[0].y;
-        this.i = 0;
-        this.speed = 1;
-        this.hp = 100;
-        this.maxHp = 100;
+        this.f = 0; // fractional index along path
+         this.speed = 1; // pixels per frame
+        this.hp = 100 * (1 + 0.1 * (wave - 1)); // increase 10% per wave
+        this.maxHp = 100 * (1 + 0.1 * (wave - 1));
         this.reward = 10;
     }
 
     update() {
-        const nextPoint = path[this.i + 1];
-        if (!nextPoint) {
+        if (this.f >= path.length - 1) {
             lives--;
             this.hp = 0;
             return;
         }
 
-        const dx = nextPoint.x - this.x;
-        const dy = nextPoint.y - this.y;
+        const i = Math.floor(this.f);
+        const nextI = i + 1;
+        const p1 = path[i];
+        const p2 = path[nextI];
+
+        const dx = p2.x - p1.x;
+        const dy = p2.y - p1.y;
         const dist = Math.hypot(dx, dy);
 
-        if (dist < this.speed) this.i++;
-        else {
-            this.x += (dx / dist) * this.speed;
-            this.y += (dy / dist) * this.speed;
-        }
+        // move along segment proportional to distance
+        this.f += this.speed / dist;
+
+        this.x = p1.x + dx * (this.f - i);
+        this.y = p1.y + dy * (this.f - i);
     }
+}
 
     draw() {
         // body
