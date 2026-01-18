@@ -190,29 +190,32 @@ rageBtn.onclick = () => {
     if (gameRunning) return;
     gameRunning = true;
 
-    let count = Math.ceil(wave + 5); // number of enemies this wave
+    wave++; // increment wave
+    updateUI(); // refresh UI
+
+    let count = Math.ceil(wave + 5);
     let spawned = 0;
-spawnIntervalId = setInterval(() => {
-    const enemy = new Enemy();
 
-    // only the 5th, 10th, 15th, etc. enemy is faster
-    if ((spawned + 1) % 5 === 0) {
-        enemy.speed *= 1.5;
-        enemy.color = 'orange'; // optional: unique color
-    } else {
-        enemy.color = 'red';
-    }
+    spawnIntervalId = setInterval(() => {
+        const enemy = new Enemy();
 
-    enemies.push(enemy);
-    spawned++;
+        if ((spawned + 1) % 5 === 0) {
+            enemy.speed *= 1.5;
+            enemy.color = 'orange';
+        } else {
+            enemy.color = 'red';
+        }
 
-    if (spawned >= count) {
-        clearInterval(spawnIntervalId);
-        spawnIntervalId = null;
-        gameRunning = false;
-    }
-}, 800);
+        enemies.push(enemy);
+        spawned++;
+
+        if (spawned >= count) {
+            clearInterval(spawnIntervalId);
+            spawnIntervalId = null;
+        }
+    }, 800);
 };
+
 
 
     /* =========================
