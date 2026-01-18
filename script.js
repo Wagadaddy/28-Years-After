@@ -422,6 +422,14 @@ nightModeToggle.addEventListener('click', () => {
     nightModeToggle.textContent = document.body.classList.contains('dark') ? '☀️ Day Mode' : '🌙 Night Mode';
 });
 
+startGameButton.addEventListener('click', () => {
+    if (selectedMap) {
+        startMenu.style.display = 'none';
+        gameContainer.classList.add('active');
+        startGameLoop(); 
+    }
+});
+
 //Game Loop
 let animationRunning = false;
 
@@ -431,11 +439,3 @@ function startGameLoop() {
         requestAnimationFrame(gameLoop);
     }
 }
-
-startGameButton.addEventListener('click', () => {
-    if (selectedMap) {
-        startMenu.style.display = 'none';
-        gameContainer.classList.add('active');
-        startGameLoop(); // ✅ start loop only now
-    }
-});
