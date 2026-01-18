@@ -50,9 +50,9 @@ document.addEventListener("DOMContentLoaded", () => {
             {x:400,y:330},{x:500,y:280},{x:600,y:310},{x:700,y:290},{x:800,y:300}
         ],
         full: [
-            {x:0,y:300},{x:20,y:30},{x:400,y:20},{x:400,y:150},
-            {x:7800,y:150},{x:780,y:300},{x:400,y:300},{x:400,y:450},
-            {x:20,y:450},{x:20,y:600},{x:800,y:600}
+            {x:0,y:300},{x:50,y:300},{x:50,y:20},{x:400,y:20},{x:400,y:150},
+            {x:780,y:150},{x:780,y:300},{x:400,y:300},{x:400,y:450},
+            {x:20,y:450},{x:20,y:580},{x:800,y:580}
         ],
         heartbeat: [
             {x:0,y:300},{x:50,y:300},{x:100,y:200},{x:150,y:400},
@@ -190,30 +190,29 @@ rageBtn.onclick = () => {
     if (gameRunning) return;
     gameRunning = true;
 
-    let count = Math.ceil(wave * 5); // number of enemies this wave
+    let count = Math.ceil(wave + 5); // number of enemies this wave
     let spawned = 0;
+spawnIntervalId = setInterval(() => {
+    const enemy = new Enemy();
 
-    spawnIntervalId = setInterval(() => {
-        let enemy = new Enemy();
+    // only the 5th, 10th, 15th, etc. enemy is faster
+    if ((spawned + 1) % 5 === 0) {
+        enemy.speed *= 1.5;
+        enemy.color = 'orange'; // optional: unique color
+    } else {
+        enemy.color = 'red';
+    }
 
-        // make every 5th enemy 1.5x faster
-        if ((spawned + 1) % 5 === 0) {
-            enemy.speed *= 1.5;
-        }
+    enemies.push(enemy);
+    spawned++;
 
-        enemies.push(enemy);
-        spawned++;
+    if (spawned >= count) {
+        clearInterval(spawnIntervalId);
+        spawnIntervalId = null;
+        gameRunning = false;
+    }
+}, 800);
 
-        if (spawned >= count) {
-            clearInterval(spawnIntervalId);
-            spawnIntervalId = null;
-            gameRunning = false;
-        }
-    }, 800);
-
-    wave++;
-    updateUI();
-};
 
 
     /* =========================
@@ -221,13 +220,11 @@ rageBtn.onclick = () => {
     ========================= */
   class Enemy {
     constructor() {
-        this.f = 0; // fractional index along path
-        this.speed = 1; // pixels per frame
-        this.hp = 100 * (1 + 0.15 * (wave - 1)); // 10% increase per wave
-        this.maxHp = 100 * (1 + 0.15 * (wave - 1));
+        this.f = 0; // position along path
+        this.speed = 1; // base speed
+        this.hp = 100 * (1 + 0.1 * (wave - 1)); // increase 10% per wave
+        this.maxHp = this.hp;
         this.reward = 10;
-
-        // starting position
         this.x = path[0].x;
         this.y = path[0].y;
     }
@@ -243,35 +240,31 @@ rageBtn.onclick = () => {
         const nextI = i + 1;
         const p1 = path[i];
         const p2 = path[nextI];
-
         const dx = p2.x - p1.x;
         const dy = p2.y - p1.y;
         const dist = Math.hypot(dx, dy);
 
-        // move along segment proportional to distance
         this.f += this.speed / dist;
-
         this.x = p1.x + dx * (this.f - i);
         this.y = p1.y + dy * (this.f - i);
     }
 
     draw() {
-        // draw enemy as circle
+        // draw body
         ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
         ctx.fill();
 
-        // hp bar background
-        ctx.fillStyle = 'white';
-        ctx.fillRect(this.x - 12, this.y - 18, 24, 4);
-
         // hp bar
-        const hpWidth = (this.hp / this.maxHp) * 24;
         ctx.fillStyle = 'black';
-        ctx.fillRect(this.x - 12, this.y - 18, hpWidth, 4);
+        ctx.fillRect(this.x - 10, this.y - 15, 20, 4);
+        const hpWidth = (this.hp / this.maxHp) * 20;
+        ctx.fillStyle = 'green';
+        ctx.fillRect(this.x - 10, this.y - 15, hpWidth, 4);
     }
 }
+
 
 
      // draw hp bar outline
