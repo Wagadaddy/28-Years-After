@@ -1,117 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tower Defense Game — 28 Years After</title>
-</head>
-<body style="margin:0; padding:0; text-align:center; font-family:Arial,sans-serif;">
+<!-- Start Menu -->
+<div id="startMenu" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:20px; border:2px solid black; margin:20px auto; width:300px; background-color:#eee;">
+    <h2 style="margin:0;">Tower Defense Game</h2>
 
-    <!-- Start Menu -->
-    <div id="startMenu" style="padding:20px; border:1px solid black; display:block; margin:20px auto; width:320px;">
-        <h1>Tower Defense Game</h1>
-
-        <!-- Map Selection -->
-        <div style="margin-bottom:15px;">
-            <h2>Select Map</h2>
-            <button class="mapButton" id="map1" style="margin:3px; padding:5px 10px;">River Path</button>
-            <button class="mapButton" id="map2" style="margin:3px; padding:5px 10px;">Full Map</button>
-            <button class="mapButton" id="map3" style="margin:3px; padding:5px 10px;">Heartbeat</button>
-        </div>
-
-        <!-- Start Game -->
-        <button id="startGame" disabled style="padding:8px 15px; margin-bottom:10px;">Start Game</button>
-        <br>
-
-        <!-- Night & Rage Mode -->
-        <button id="nightModeToggle" style="margin:3px; padding:5px 10px;">🌙 Night Mode</button>
-        <button id="rageModeToggle" style="margin:3px; padding:5px 10px;">🔥 Rage Mode</button>
-        <br><br>
-
-        <!-- Highscore -->
-        <div id="highscore" style="margin-top:10px; font-weight:bold;">
-            Highscore: <span id="highscoreValue">0</span>
-        </div>
-
-        <hr style="margin:10px 0;">
-
+    <!-- Map Selection -->
+    <div id="mapSelection" style="display:flex; flex-direction:column; gap:5px;">
+        <strong>Select Map:</strong>
+        <button id="map1" class="mapButton" style="padding:5px;">River Path</button>
+        <button id="map2" class="mapButton" style="padding:5px;">Full Map</button>
+        <button id="map3" class="mapButton" style="padding:5px;">Heartbeat</button>
     </div>
 
-    <!-- Game Container -->
-    <div id="gameContainer" style="display:none; margin-top:10px; text-align:center;">
-        <canvas id="gameCanvas" width="800" height="600" style="border:2px solid black; display:block; margin:0 auto;"></canvas>
+    <!-- Start Game -->
+    <button id="startGame" disabled style="padding:8px 15px; margin-top:10px;">Start Game</button>
 
-        <!-- UI Panel -->
-        <div id="ui" style="margin-top:10px; border:1px solid black; display:inline-block; padding:10px;">
-            <div id="stats" style="margin-bottom:5px;">
-                Lives: <span id="lives">20</span> |
-                Money: $<span id="money">100</span> |
-                Wave: <span id="wave">1</span> |
-                Score: <span id="score">0</span>
-            </div>
-            <button id="startWave" style="margin:3px; padding:5px 10px;">Start Wave</button>
-            <div id="towerSelect" style="margin-top:5px;">
-                <button id="rifleTower2" data-cost="50" style="margin:3px; padding:5px 10px;">Rifle Tower ($50)</button>
-                <button id="sniperTower2" data-cost="100" style="margin:3px; padding:5px 10px;">Sniper Tower ($100)</button>
-            </div>
-        </div>
+    <!-- Night Mode & Rage Mode -->
+    <div style="display:flex; gap:5px; margin-top:10px;">
+        <button id="nightModeToggle" style="padding:5px;">🌙 Night Mode</button>
+        <button id="rageModeToggle" style="padding:5px;">🔥 Rage Mode</button>
     </div>
 
-   <script>
-    const nightBtn = document.getElementById('nightModeToggle');
-    nightBtn.addEventListener('click', () => {
-        // Toggle dark mode class
-        if (document.body.classList.contains('dark')) {
-            document.body.classList.remove('dark');
-            nightBtn.textContent = '🌙 Night Mode';
-        } else {
-            document.body.classList.remove('rage'); // remove rage if active
-            document.body.classList.add('dark');
-            nightBtn.textContent = '☀️ Day Mode';
-            document.body.style.backgroundColor = ''; // let CSS class handle background
-            document.body.style.color = '';
-        }
-    });
+    <!-- Highscore -->
+    <div id="highscore" style="margin-top:10px; font-weight:bold;">
+        Highscore: <span id="highscoreValue">0</span>
+    </div>
 
-    // Rage Mode toggle
-    const rageBtn = document.getElementById('rageModeToggle');
-    rageBtn.addEventListener('click', () => {
-        document.body.classList.remove('dark'); // remove dark if active
-        document.body.style.backgroundColor = '#550000';
-        document.body.style.color = '#ff9999';
-    });
-</script>
+    <!-- Tower Buttons -->
+    <div id="towerSelect" style="display:flex; flex-direction:column; gap:5px; margin-top:10px;">
+        <button id="rifleTower" style="padding:5px;">Rifle Tower ($50)</button>
+        <button id="sniperTower" style="padding:5px;">Sniper Tower ($100)</button>
+    </div>
 
-        <!-- Highscore inside Start Menu -->
-<div id="highscore" style="margin-top:10px; font-weight:bold;">
-    Highscore: <span id="highscoreValue">0</span>
+    <!-- Start Wave Button -->
+    <button id="startWave" style="padding:5px; margin-top:10px;">Start Wave</button>
 </div>
 
-<script>
-    // Track highscore since page loaded
-    let highscore = 0;
-    const scoreEl = document.getElementById('score');
-    const highscoreEl = document.getElementById('highscoreValue');
-
-    function updateHighscore() {
-        const currentScore = parseInt(scoreEl.textContent);
-        if (currentScore > highscore) {
-            highscore = currentScore;
-            highscoreEl.textContent = highscore;
-        }
-    }
-
-    // Update highscore only if the game canvas is active
-    setInterval(() => {
-        if (document.getElementById('gameContainer').style.display !== 'none') {
-            updateHighscore();
-        }
-    }, 500);
-</script>
-
-        // Update highscore every second
-    <script>
-        setInterval(updateHighscore, 1000);
-    </script>
-</body>
-</html>
+<!-- Game container -->
+<div id="gameContainer" style="display:none; text-align:center;">
+    <canvas id="gameCanvas" width="800" height="600" style="border:2px solid black; margin-top:10px;"></canvas>
+    <div id="status" style="margin-top:8px;">
+        Lives: <span id="lives">20</span> |
+        Money: $<span id="money">100</span> |
+        Wave: <span id="wave">1</span> |
+        Score: <span id="score">0</span>
+    </div>
+</div>
