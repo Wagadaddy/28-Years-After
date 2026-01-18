@@ -279,9 +279,9 @@ rageBtn.onclick = () => {
     const hpWidth = (this.hp / this.maxHp) * 24;
     ctx.fillStyle = 'lime';
     ctx.fillRect(this.x - 12, this.y - 18, hpWidth, 4);
-    }
+    
 
-        // draw hp bar outline
+     // draw hp bar outline
         ctx.fillStyle = 'black';
         ctx.fillRect(this.x - 10, this.y - 15, 20, 4);
 
@@ -289,7 +289,7 @@ rageBtn.onclick = () => {
         const hpWidth = (this.hp / this.maxHp) * 20;
         ctx.fillStyle = 'green';
         ctx.fillRect(this.x - 10, this.y - 15, hpWidth, 4);
-    }
+    
 }
 
     class Tower {
