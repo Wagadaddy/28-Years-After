@@ -3,49 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tower Defense Game — 28 Years After</title>
+<title>28-Years-After</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<div id="startMenu" style="text-align:center; padding:20px;">
-    <h1>28 Years After — Tower Defense</h1>
-    <div>
-        <strong>Select Map:</strong><br>
-        <button id="map1" class="mapButton">River Path</button>
-        <button id="map2" class="mapButton">Full Map</button>
-        <button id="map3" class="mapButton">Heartbeat</button>
-    </div>
-    <br>
-    <button id="startGame" disabled>Start Game</button>
-    <br><br>
-    <button id="nightModeToggle">Night Mode</button>
-    <button id="rageModeToggle">Rage Mode</button>
-    <br><br>
-    Highscore: <span id="highscoreValue">0</span>
+<div id="startMenu">
+  <h1>28-Years-After</h1>
+  <div id="mapSelection">
+    <button id="map1" class="mapButton">River</button>
+    <button id="map2" class="mapButton">Full</button>
+    <button id="map3" class="mapButton">Heartbeat</button>
+  </div>
+  <button id="startGame" disabled>Start Game</button>
 </div>
 
-<div id="gameContainer" style="display:none; text-align:center;">
-    <canvas id="gameCanvas" width="800" height="600" style="border:2px solid black;"></canvas>
-    <div style="margin-top:5px;">
-        Lives: <span id="lives">20</span> |
-        Money: $<span id="money">100</span> |
-        Wave: <span id="wave">1</span> |
-        Score: <span id="score">0</span>
-    </div>
-    <br>
+<div id="gameContainer" style="display:none">
+  <canvas id="gameCanvas"></canvas>
+
+  <div id="controls">
+    <button id="rifleTower">Rifle Tower</button>
+    <button id="sniperTower">Sniper Tower</button>
     <button id="startWave">Start Wave</button>
-    <div id="towerSelect" style="margin-top:10px;">
-        <button id="rifleTower">Rifle Tower ($50)</button>
-        <button id="sniperTower">Sniper Tower ($100)</button>
-        <button id="mainMenuBtn">Main Menu</button>
-    </div>
+    <button id="nightModeToggle">Night Mode</button>
+    <button id="mainMenuBtn">Main Menu</button>
+  </div>
+
+  <div id="ui">
+    <span>Lives: <span id="lives"></span></span>
+    <span>Money: <span id="money"></span></span>
+    <span>Wave: <span id="wave"></span></span>
+    <span>Score: <span id="score"></span></span>
+    <span>Highscore: <span id="highscoreValue"></span></span>
+  </div>
 </div>
 
-    <style>
-body.dark { background-color: #121212; color: #eee; }
-body.rage { background-color: #550000; color: #ff9999; }
-</style>
-
-<script src="script.js" defer></script>
+<script src="game.js"></script>
 </body>
 </html>
