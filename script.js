@@ -228,7 +228,7 @@ spawnIntervalId = setInterval(() => {
         this.x = path[0].x;
         this.y = path[0].y;
     }
-
+  }
     update() {
         if (this.f >= path.length - 1) {
             lives--;
