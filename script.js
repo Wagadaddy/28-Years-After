@@ -294,14 +294,14 @@ document.addEventListener("DOMContentLoaded", () => {
     function selectMap(mapKey) {
     selectedMap = mapKey;
 
-    // Correct assignment — select the array of points for that map
+    // ✅ Correctly set the path
     path = maps[mapKey];
 
-    // Update UI to show which map is selected
+    // Update button styles
     document.querySelectorAll('.mapButton').forEach(btn => btn.classList.remove('selected'));
     document.getElementById('map' + (Object.keys(maps).indexOf(mapKey) + 1)).classList.add('selected');
 
-    // Enable the Start Game button
+    // Enable start game button
     startGameButton.disabled = false;
 }
 
