@@ -308,9 +308,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function startGameLoop() {
-        lastTime=performance.now();
-        requestAnimationFrame(gameLoop);
-    }
+    lastTime = performance.now();
+    requestAnimationFrame(gameLoop);
+}
 
     // ----- Event Listeners -----
     startWaveButton.addEventListener('click',startWave);
@@ -338,13 +338,12 @@ document.addEventListener("DOMContentLoaded", () => {
     map2Button.addEventListener('click',()=>selectMap('full'));
     map3Button.addEventListener('click',()=>selectMap('heartbeat'));
 
-    startGameButton.addEventListener('click',()=>{
-        if(selectedMap){
-            startMenu.style.display='none';
-            gameContainer.style.display='block';
-            startGameLoop();
-        }
-    });
+    startGameButton.addEventListener('click', () => {
+    if (!selectedMap) return;
+    startMenu.style.display = 'none';   // hide menu
+    gameContainer.style.display = 'block';  // show game
+    startGameLoop();  // start the game loop
+});
 
     nightModeToggle.addEventListener('click',()=>{
         document.body.classList.toggle('dark');
