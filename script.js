@@ -210,10 +210,14 @@ rageBtn.onclick = () => {
   class Enemy {
     constructor() {
         this.f = 0; // fractional index along path
-         this.speed = 1; // pixels per frame
-        this.hp = 100 * (1 + 0.1 * (wave - 1)); // increase 10% per wave
+        this.speed = 1; // pixels per frame
+        this.hp = 100 * (1 + 0.1 * (wave - 1)); // 10% increase per wave
         this.maxHp = 100 * (1 + 0.1 * (wave - 1));
         this.reward = 10;
+
+        // starting position
+        this.x = path[0].x;
+        this.y = path[0].y;
     }
 
     update() {
@@ -221,7 +225,7 @@ rageBtn.onclick = () => {
             lives--;
             this.hp = 0;
             return;
-        
+        }
 
         const i = Math.floor(this.f);
         const nextI = i + 1;
@@ -238,10 +242,9 @@ rageBtn.onclick = () => {
         this.x = p1.x + dx * (this.f - i);
         this.y = p1.y + dy * (this.f - i);
     }
-}
 
     draw() {
-        // body
+        // draw enemy as circle
         ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
@@ -252,15 +255,11 @@ rageBtn.onclick = () => {
         ctx.fillRect(this.x - 12, this.y - 18, 24, 4);
 
         // hp bar
+        const hpWidth = (this.hp / this.maxHp) * 24;
         ctx.fillStyle = 'black';
-        ctx.fillRect(
-            this.x - 12,
-            this.y - 18,
-            (this.hp / this.maxHp) * 24,
-            4
-        );
+        ctx.fillRect(this.x - 12, this.y - 18, hpWidth, 4);
     }
-
+}
 
 
      // draw hp bar outline
@@ -272,7 +271,7 @@ rageBtn.onclick = () => {
         ctx.fillStyle = 'black';
         ctx.fillRect(this.x - 10, this.y - 15, hpWidth, 4);
     
-
+}
 
     class Tower {
         constructor(x,y,type) {
