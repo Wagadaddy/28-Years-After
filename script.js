@@ -347,4 +347,4 @@ spawnIntervalId = setInterval(() => {
         else alert("Game Over!");
     }
 
-});
+}
