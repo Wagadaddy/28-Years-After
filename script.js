@@ -1,37 +1,44 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // ----- DOM elements -----
+
+    // --- DOM elements ---
+    const startMenu = document.getElementById('startMenu');
+    const gameContainer = document.getElementById('gameContainer');
+    const startGameButton = document.getElementById('startGame');
+    const nightModeToggle = document.getElementById('nightModeToggle');
+    const rageModeToggle = document.getElementById('rageModeToggle');
+    const highscoreEl = document.getElementById('highscoreValue');
+
+    const map1Button = document.getElementById('map1');
+    const map2Button = document.getElementById('map2');
+    const map3Button = document.getElementById('map3');
+
+    const rifleTowerButton = document.getElementById('rifleTower');
+    const sniperTowerButton = document.getElementById('sniperTower');
+    const startWaveButton = document.getElementById('startWave');
+
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const livesElement = document.getElementById('lives');
     const moneyElement = document.getElementById('money');
     const waveElement = document.getElementById('wave');
     const scoreElement = document.getElementById('score');
-    const startWaveButton = document.getElementById('startWave');
-    const rifleTowerButton = document.getElementById('rifleTower');
-    const sniperTowerButton = document.getElementById('sniperTower');
-    const startMenu = document.getElementById('startMenu');
-    const gameContainer = document.getElementById('gameContainer');
-    const startGameButton = document.getElementById('startGame');
-    const nightModeToggle = document.getElementById('nightModeToggle');
-    const map1Button = document.getElementById('map1');
-    const map2Button = document.getElementById('map2');
-    const map3Button = document.getElementById('map3');
 
-    // ----- Game variables -----
+    // --- Game variables ---
     let lives = 20;
     let money = 100;
     let wave = 1;
     let score = 0;
+    let highscore = 0;
     let enemies = [];
     let towers = [];
     let projectiles = [];
     let gameRunning = false;
     let selectedTowerType = null;
-    let lastTime = 0;
     let selectedMap = null;
     let path = [];
+    let lastTime = 0;
 
-    // ----- Maps -----
+    // --- Map definitions ---
     const maps = {
         river: [
             {x: 10, y: 300}, {x: 100, y: 50}, {x: 200, y: 320}, {x: 300, y: 290}, {x: 400, y: 330},
@@ -48,6 +55,70 @@ document.addEventListener("DOMContentLoaded", () => {
             {x: 750, y: 400}, {x: 790, y: 300}
         ]
     };
+
+    // --- Event listeners ---
+
+    // Map selection
+    function selectMap(mapKey) {
+        selectedMap = mapKey;
+        path = maps[mapKey];
+        document.querySelectorAll('.mapButton').forEach(btn => btn.classList.remove('selected'));
+        document.getElementById('map' + (Object.keys(maps).indexOf(mapKey) + 1)).classList.add('selected');
+        startGameButton.disabled = false;
+    }
+    map1Button.addEventListener('click', () => selectMap('river'));
+    map2Button.addEventListener('click', () => selectMap('full'));
+    map3Button.addEventListener('click', () => selectMap('heartbeat'));
+
+    // Start Game
+    startGameButton.addEventListener('click', () => {
+        if (!selectedMap) return;
+        startMenu.style.display = 'none';
+        gameContainer.style.display = 'block';
+        startGameLoop();
+    });
+
+    // Night Mode
+    nightModeToggle.addEventListener('click', () => {
+        if (document.body.classList.contains('dark')) {
+            document.body.classList.remove('dark');
+            nightModeToggle.textContent = '🌙 Night Mode';
+        } else {
+            document.body.classList.remove('rage');
+            document.body.classList.add('dark');
+            nightModeToggle.textContent = '☀️ Day Mode';
+        }
+    });
+
+    // Rage Mode
+    rageModeToggle.addEventListener('click', () => {
+        document.body.classList.remove('dark');
+        document.body.classList.add('rage');
+        document.body.style.backgroundColor = '#550000';
+        document.body.style.color = '#ff9999';
+    });
+
+    // Towers
+    rifleTowerButton.addEventListener('click', () => selectedTowerType = 'rifle');
+    sniperTowerButton.addEventListener('click', () => selectedTowerType = 'sniper');
+
+    // Start Wave
+    startWaveButton.addEventListener('click', () => startWave());
+
+    // Highscore update (only in menu)
+    setInterval(() => {
+        if (gameContainer.style.display !== 'none') {
+            if (score > highscore) {
+                highscore = score;
+                highscoreEl.textContent = highscore;
+            }
+        }
+    }, 500);
+
+    // --- Rest of your original classes (Enemy, Tower, Projectile) and functions ---
+    // Make sure all drawing, gameLoop, spawnEnemy, placeTower etc. are inside DOMContentLoaded
+    // ...
+});
 
     // ----- Classes -----
     class Enemy {
