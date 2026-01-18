@@ -212,7 +212,7 @@ spawnIntervalId = setInterval(() => {
         gameRunning = false;
     }
 }, 800);
-
+};
 
 
     /* =========================
