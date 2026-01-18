@@ -1,12 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // --- DOM elements ---
+document.addEventListener('DOMContentLoaded', () => {
     const startMenu = document.getElementById('startMenu');
     const gameContainer = document.getElementById('gameContainer');
     const startGameButton = document.getElementById('startGame');
-    const nightModeToggle = document.getElementById('nightModeToggle');
-    const rageModeToggle = document.getElementById('rageModeToggle');
+
+    const nightBtn = document.getElementById('nightModeToggle');
+    const rageBtn = document.getElementById('rageModeToggle');
+
     const highscoreEl = document.getElementById('highscoreValue');
+    let highscore = 0;
 
     const map1Button = document.getElementById('map1');
     const map2Button = document.getElementById('map2');
@@ -70,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     map2Button.addEventListener('click', () => selectMap('full'));
     map3Button.addEventListener('click', () => selectMap('heartbeat'));
 
-    // Start Game
+     // Start Game button
     startGameButton.addEventListener('click', () => {
         if (!selectedMap) return;
         startMenu.style.display = 'none';
@@ -78,25 +81,27 @@ document.addEventListener("DOMContentLoaded", () => {
         startGameLoop();
     });
 
+    
     // Night Mode
-    nightModeToggle.addEventListener('click', () => {
+    nightBtn.addEventListener('click', () => {
+        document.body.classList.remove('rage');
         if (document.body.classList.contains('dark')) {
             document.body.classList.remove('dark');
-            nightModeToggle.textContent = '🌙 Night Mode';
+            nightBtn.textContent = '🌙 Night Mode';
         } else {
-            document.body.classList.remove('rage');
             document.body.classList.add('dark');
-            nightModeToggle.textContent = '☀️ Day Mode';
+            nightBtn.textContent = '☀️ Day Mode';
         }
     });
 
     // Rage Mode
-    rageModeToggle.addEventListener('click', () => {
+    rageBtn.addEventListener('click', () => {
         document.body.classList.remove('dark');
         document.body.classList.add('rage');
         document.body.style.backgroundColor = '#550000';
         document.body.style.color = '#ff9999';
     });
+
 
     // Towers
     rifleTowerButton.addEventListener('click', () => selectedTowerType = 'rifle');
@@ -105,11 +110,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Start Wave
     startWaveButton.addEventListener('click', () => startWave());
 
-    // Highscore update (only in menu)
+    // Highscore updater
     setInterval(() => {
         if (gameContainer.style.display !== 'none') {
-            if (score > highscore) {
-                highscore = score;
+            const currentScore = parseInt(document.getElementById('score').textContent);
+            if (currentScore > highscore) {
+                highscore = currentScore;
                 highscoreEl.textContent = highscore;
             }
         }
