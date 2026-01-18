@@ -204,28 +204,62 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =========================
        CLASSES
     ========================= */
-    class Enemy {
-        constructor() {
-            this.x = path[0].x;
-            this.y = path[0].y;
-            this.i = 0;
-            this.speed = 1;
-            this.hp = 100;
-            this.reward = 10;
+   class Enemy {
+    constructor() {
+        this.x = path[0].x;
+        this.y = path[0].y;
+        this.i = 0;
+        this.speed = 1;
+        this.hp = 100;
+        this.maxHp = 100;
+        this.reward = 10;
+    }
+
+    update() {
+        const nextPoint = path[this.i + 1];
+        if (!nextPoint) {
+            // reached the end
+            lives--;
+            this.hp = 0;
+            return;
         }
-        update() {
-            const t = path[this.i + 1];
-            if (!t) { lives--; this.hp = 0; return; }
-            const dx = t.x - this.x, dy = t.y - this.y;
-            const d = Math.hypot(dx, dy);
-            if (d < this.speed) this.i++;
-            else { this.x += dx/d*this.speed; this.y += dy/d*this.speed; }
-        }
-        draw() {
-            ctx.fillStyle = 'red';
-            ctx.fillRect(this.x-10, this.y-10, 20, 20);
+        const dx = nextPoint.x - this.x;
+        const dy = nextPoint.y - this.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < this.speed) this.i++;
+        else {
+            this.x += (dx / dist) * this.speed;
+            this.y += (dy / dist) * this.speed;
         }
     }
+
+    draw() {
+    // draw enemy body (circle)
+    ctx.fillStyle = 'red';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
+    ctx.fill();
+
+    // draw health bar background
+    ctx.fillStyle = 'black';
+    ctx.fillRect(this.x - 12, this.y - 18, 24, 4);
+
+    // draw health amount
+    const healthWidth = (this.hp / this.maxHp) * 24;
+    ctx.fillStyle = 'lime';
+    ctx.fillRect(this.x - 12, this.y - 18, healthWidth, 4);
+    }
+
+        // draw health bar outline
+        ctx.fillStyle = 'black';
+        ctx.fillRect(this.x - 10, this.y - 15, 20, 4);
+
+        // draw health amount
+        const healthWidth = (this.hp / this.maxHp) * 20;
+        ctx.fillStyle = 'green';
+        ctx.fillRect(this.x - 10, this.y - 15, healthWidth, 4);
+    }
+}
 
     class Tower {
         constructor(x,y,type) {
