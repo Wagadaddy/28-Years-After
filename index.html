@@ -35,11 +35,6 @@
 
         <hr style="margin:10px 0;">
 
-        <!-- Tower selection in menu -->
-        <div>
-            <button id="rifleTower" data-cost="50" style="margin:3px; padding:5px 10px;">Rifle Tower ($50)</button>
-            <button id="sniperTower" data-cost="100" style="margin:3px; padding:5px 10px;">Sniper Tower ($100)</button>
-        </div>
     </div>
 
     <!-- Game Container -->
@@ -62,13 +57,30 @@
         </div>
     </div>
 
-    <script src="script.js" defer></script>
-    <script>
-        // Rage Mode button logic
-        document.getElementById('rageModeToggle').addEventListener('click', () => {
-            document.body.style.backgroundColor = '#550000';
-            document.body.style.color = '#ff9999';
-        });
+   <script>
+    const nightBtn = document.getElementById('nightModeToggle');
+    nightBtn.addEventListener('click', () => {
+        // Toggle dark mode class
+        if (document.body.classList.contains('dark')) {
+            document.body.classList.remove('dark');
+            nightBtn.textContent = '🌙 Night Mode';
+        } else {
+            document.body.classList.remove('rage'); // remove rage if active
+            document.body.classList.add('dark');
+            nightBtn.textContent = '☀️ Day Mode';
+            document.body.style.backgroundColor = ''; // let CSS class handle background
+            document.body.style.color = '';
+        }
+    });
+
+    // Rage Mode toggle
+    const rageBtn = document.getElementById('rageModeToggle');
+    rageBtn.addEventListener('click', () => {
+        document.body.classList.remove('dark'); // remove dark if active
+        document.body.style.backgroundColor = '#550000';
+        document.body.style.color = '#ff9999';
+    });
+</script>
 
         // Highscore tracking
         let highscore = 0;
