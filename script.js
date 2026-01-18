@@ -144,11 +144,12 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =========================
        MODES
     ========================= */
-    Btn.onclick = () => {
-        document.body.classList.remove('rage');
-        const isDark = document.body.classList.toggle('dark');
-        nightBtn.textContent = isDark ? 'Day Mode' : 'Night Mode';
-    };
+    nightBtn.onclick = () => {
+    document.body.classList.remove('rage');
+    const isDark = document.body.classList.toggle('dark');
+    nightBtn.textContent = isDark ? 'Day Mode' : 'Night Mode';
+};
+
 
     rageBtn.onclick = () => {
         document.body.classList.remove('dark');
@@ -218,20 +219,45 @@ document.addEventListener("DOMContentLoaded", () => {
     update() {
         const nextPoint = path[this.i + 1];
         if (!nextPoint) {
-            // reached the end
             lives--;
             this.hp = 0;
             return;
         }
+
         const dx = nextPoint.x - this.x;
         const dy = nextPoint.y - this.y;
         const dist = Math.hypot(dx, dy);
-        if (dist < this.speed) this.i++;
-        else {
+
+        if (dist < this.speed) {
+            this.i++;
+        } else {
             this.x += (dx / dist) * this.speed;
             this.y += (dy / dist) * this.speed;
         }
     }
+
+    draw() {
+        // enemy body
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
+        ctx.fill();
+
+        // hp bar background
+        ctx.fillStyle = 'black';
+        ctx.fillRect(this.x - 12, this.y - 18, 24, 4);
+
+        // hp bar fill
+        ctx.fillStyle = 'lime';
+        ctx.fillRect(
+            this.x - 12,
+            this.y - 18,
+            (this.hp / this.maxHp) * 24,
+            4
+        );
+    }
+}
+
 
     draw() {
     // draw enemy body (circle)
