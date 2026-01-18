@@ -144,18 +144,23 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =========================
        MODES
     ========================= */
-    nightBtn.onclick = () => {
+   
+nightBtn.onclick = () => {
     document.body.classList.remove('rage');
     const isDark = document.body.classList.toggle('dark');
     nightBtn.textContent = isDark ? 'Day Mode' : 'Night Mode';
 };
 
+rageBtn.onclick = () => {
+    const isRage = document.body.classList.toggle('rage');
+    document.body.classList.remove('dark');
+    nightBtn.textContent = 'Night Mode';
 
-    rageBtn.onclick = () => {
-        document.body.classList.remove('dark');
-        document.body.classList.toggle('rage');
-        nightBtn.textContent = 'Night Mode';
-    };
+    if (!isRage) {
+        document.body.classList.remove('rage');
+    }
+};
+
 
     /* =========================
        TOWERS
