@@ -221,7 +221,7 @@ rageBtn.onclick = () => {
             lives--;
             this.hp = 0;
             return;
-        }
+        
 
         const i = Math.floor(this.f);
         const nextI = i + 1;
@@ -248,11 +248,11 @@ rageBtn.onclick = () => {
         ctx.fill();
 
         // hp bar background
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = 'white';
         ctx.fillRect(this.x - 12, this.y - 18, 24, 4);
 
         // hp bar
-        ctx.fillStyle = 'lime';
+        ctx.fillStyle = 'black';
         ctx.fillRect(
             this.x - 12,
             this.y - 18,
@@ -260,16 +260,16 @@ rageBtn.onclick = () => {
             4
         );
     }
-}
+
 
 
      // draw hp bar outline
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = 'white';
         ctx.fillRect(this.x - 10, this.y - 15, 20, 4);
 
         // draw hp amount
         const hpWidth = (this.hp / this.maxHp) * 20;
-        ctx.fillStyle = 'green';
+        ctx.fillStyle = 'black';
         ctx.fillRect(this.x - 10, this.y - 15, hpWidth, 4);
     
 
