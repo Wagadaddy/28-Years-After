@@ -31,29 +31,14 @@
 </head>
 <body>
 <button id="nightModeToggle">🌙 Day/Night</button>
-<div id="startMenu">
-    <div id="startMenuContent">
-        <h1>Tower Defense Game</h1>
-        <div id="mapSelection">
-            <h2>Select Map</h2>
-            <button id="map1" class="mapButton">River Path</button>
-            <button id="map2" class="mapButton">Full Map</button>
-            <button id="map3" class="mapButton">Heartbeat</button>
-        </div>
-        <button id="startGame" disabled>Start Game</button>
-        <div id="towerSelect">
-            <button id="rifleTower" data-cost="50">Rifle Tower ($50)</button>
-            <button id="sniperTower" data-cost="100">Sniper Tower ($100)</button>
-        </div>
-    </div>
-</div>
+<            <span id="lives">Lives: 20</span>
 <div id="gameContainer">
     <canvas id="gameCanvas" width="800" height="600"></canvas>
     <div id="ui">
         <div id="stats">
             <span id="lives">Lives: 20</span>
             <span id="money">Money: $100</span>
-            <span id="wave">Wave: 1</span>
+            <span id="wave">Wave: 0</span>
             <span id="score">Score: 0</span>
         </div>
         <button id="startWave">Start Wave</button>
