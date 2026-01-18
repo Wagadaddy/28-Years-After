@@ -233,16 +233,15 @@ rageBtn.onclick = () => {
         const dy = nextPoint.y - this.y;
         const dist = Math.hypot(dx, dy);
 
-        if (dist < this.speed) {
-            this.i++;
-        } else {
+        if (dist < this.speed) this.i++;
+        else {
             this.x += (dx / dist) * this.speed;
             this.y += (dy / dist) * this.speed;
         }
     }
 
     draw() {
-        // enemy body
+        // body
         ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
@@ -252,7 +251,7 @@ rageBtn.onclick = () => {
         ctx.fillStyle = 'black';
         ctx.fillRect(this.x - 12, this.y - 18, 24, 4);
 
-        // hp bar fill
+        // hp bar
         ctx.fillStyle = 'lime';
         ctx.fillRect(
             this.x - 12,
@@ -263,23 +262,6 @@ rageBtn.onclick = () => {
     }
 }
 
-
-    draw() {
-    // draw enemy body (circle)
-    ctx.fillStyle = 'red';
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
-    ctx.fill();
-
-    // draw hp bar background
-    ctx.fillStyle = 'black';
-    ctx.fillRect(this.x - 12, this.y - 18, 24, 4);
-
-    // draw hp amount
-    const hpWidth = (this.hp / this.maxHp) * 24;
-    ctx.fillStyle = 'lime';
-    ctx.fillRect(this.x - 12, this.y - 18, hpWidth, 4);
-    
 
      // draw hp bar outline
         ctx.fillStyle = 'black';
