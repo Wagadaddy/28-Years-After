@@ -180,18 +180,26 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    nightBtn.addEventListener('click',()=>{
-        document.body.classList.remove('rage');
-        document.body.classList.toggle('dark');
-        nightBtn.textContent=document.body.classList.contains('dark')?'☀️ Day Mode':'🌙 Night Mode';
-    });
+    nightBtn.addEventListener('click', () => {
+    // Remove Rage if active
+    document.body.classList.remove('rage');
+    document.body.classList.remove('dark'); // remove first to force toggle
+    document.body.classList.toggle('dark');
+    // Update button text
+    nightBtn.textContent = document.body.classList.contains('dark') ? 'Day Mode' : 'Night Mode';
+});
 
-    rageBtn.addEventListener('click',()=>{
-        document.body.classList.remove('dark');
-        document.body.classList.toggle('rage');
-        document.body.style.backgroundColor='#550000';
-        document.body.style.color='#ff9999';
-    });
+rageBtn.addEventListener('click', () => {
+    // Remove dark if active
+    document.body.classList.remove('dark');
+    // Toggle rage class
+    if(document.body.classList.contains('rage')){
+        document.body.classList.remove('rage');
+    } else {
+        document.body.classList.add('rage');
+    }
+});
+
 
     // --- Highscore updater ---
     setInterval(()=>{
