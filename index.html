@@ -82,18 +82,32 @@
     });
 </script>
 
-        // Highscore tracking
-        let highscore = 0;
-        const scoreEl = document.getElementById('score');
-        const highscoreEl = document.getElementById('highscoreValue');
+        <!-- Highscore inside Start Menu -->
+<div id="highscore" style="margin-top:10px; font-weight:bold;">
+    Highscore: <span id="highscoreValue">0</span>
+</div>
 
-        function updateHighscore() {
-            const currentScore = parseInt(scoreEl.textContent);
-            if (currentScore > highscore) {
-                highscore = currentScore;
-                highscoreEl.textContent = highscore;
-            }
+<script>
+    // Track highscore since page loaded
+    let highscore = 0;
+    const scoreEl = document.getElementById('score');
+    const highscoreEl = document.getElementById('highscoreValue');
+
+    function updateHighscore() {
+        const currentScore = parseInt(scoreEl.textContent);
+        if (currentScore > highscore) {
+            highscore = currentScore;
+            highscoreEl.textContent = highscore;
         }
+    }
+
+    // Update highscore only if the game canvas is active
+    setInterval(() => {
+        if (document.getElementById('gameContainer').style.display !== 'none') {
+            updateHighscore();
+        }
+    }, 500);
+</script>
 
         // Update highscore every second
         setInterval(updateHighscore, 1000);
