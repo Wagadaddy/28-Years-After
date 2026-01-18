@@ -181,24 +181,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     nightBtn.addEventListener('click', () => {
-    // Remove Rage if active
-    document.body.classList.remove('rage');
-    document.body.classList.remove('dark'); // remove first to force toggle
-    document.body.classList.toggle('dark');
-    // Update button text
-    nightBtn.textContent = document.body.classList.contains('dark') ? 'Day Mode' : 'Night Mode';
+    // If Rage Mode is active, turn it off
+    if(document.body.classList.contains('rage')){
+        document.body.classList.remove('rage');
+    }
+
+    // Toggle Dark Mode
+    const isDark = document.body.classList.toggle('dark');
+    
+    // Update button text based on current state
+    nightBtn.textContent = isDark ? '☀️ Day Mode' : '🌙 Night Mode';
 });
 
 rageBtn.addEventListener('click', () => {
-    // Remove dark if active
-    document.body.classList.remove('dark');
-    // Toggle rage class
-    if(document.body.classList.contains('rage')){
-        document.body.classList.remove('rage');
-    } else {
-        document.body.classList.add('rage');
+    // If Dark Mode is active, turn it off
+    if(document.body.classList.contains('dark')){
+        document.body.classList.remove('dark');
+        nightBtn.textContent = '🌙 Night Mode';
     }
+
+    // Toggle Rage Mode
+    const isRage = document.body.classList.toggle('rage');
 });
+
 
 
     // --- Highscore updater ---
