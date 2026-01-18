@@ -339,7 +339,7 @@ spawnIntervalId = setInterval(() => {
         drawPath();
 
         enemies = enemies.filter(e=>{e.update();e.draw();return e.hp>0;});
-        towers.forEach(tw=>{tw.update(t);tw.draw();});
+        towers.forEach(tw => { tw.update(t); tw.draw(); }); 
         projectiles = projectiles.filter(p=>{const h=p.update();p.draw();return !h;});
 
         updateUI();
