@@ -1,3 +1,5 @@
+console.log("Script loaded!");
+
 document.addEventListener("DOMContentLoaded", () => {
     // --- Canvas & DOM ---
     const canvas = document.getElementById('gameCanvas');
@@ -293,16 +295,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function selectMap(mapKey) {
     selectedMap = mapKey;
+    path = maps[mapKey]; // assign the correct map path
 
-    // ✅ Correctly set the path
-    path = maps[mapKey];
-
-    // Update button styles
+    // Highlight selected button
     document.querySelectorAll('.mapButton').forEach(btn => btn.classList.remove('selected'));
     document.getElementById('map' + (Object.keys(maps).indexOf(mapKey) + 1)).classList.add('selected');
 
-    // Enable start game button
-    startGameButton.disabled = false;
+    startGameButton.disabled = false; // enable start button
 }
 
     map1Button.addEventListener('click',()=>selectMap('river'));
