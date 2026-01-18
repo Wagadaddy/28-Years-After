@@ -245,9 +245,11 @@ spawnIntervalId = setInterval(() => {
         const dy = p2.y - p1.y;
         const dist = Math.hypot(dx, dy);
 
-        this.f += this.speed / dist;
-        this.x = p1.x + dx * (this.f - i);
-        this.y = p1.y + dy * (this.f - i);
+        this.x += (dx / dist) * this.speed;
+        this.y += (dy / dist) * this.speed;
+
+        this.f = i + Math.hypot(this.x - p1.x, this.y - p1.y) / dist;
+
     }
 
     draw() {
