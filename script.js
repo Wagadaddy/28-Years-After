@@ -144,16 +144,16 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =========================
        MODES
     ========================= */
-    nightBtn.onclick = () => {
+    Btn.onclick = () => {
         document.body.classList.remove('rage');
         const isDark = document.body.classList.toggle('dark');
-        nightBtn.textContent = isDark ? '☀️ Day Mode' : '🌙 Night Mode';
+        nightBtn.textContent = isDark ? 'Day Mode' : 'Night Mode';
     };
 
     rageBtn.onclick = () => {
         document.body.classList.remove('dark');
         document.body.classList.toggle('rage');
-        nightBtn.textContent = '🌙 Night Mode';
+        nightBtn.textContent = 'Night Mode';
     };
 
     /* =========================
