@@ -290,15 +290,19 @@ function gameLoop(currentTime) {
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw path
+   // Draw path only if valid
+if (path.length > 1) {
     ctx.strokeStyle = 'gray';
     ctx.lineWidth = 20;
+    ctx.lineCap = 'round';
+
     ctx.beginPath();
     ctx.moveTo(path[0].x, path[0].y);
     for (let i = 1; i < path.length; i++) {
         ctx.lineTo(path[i].x, path[i].y);
     }
     ctx.stroke();
+}
 
     // Update and draw enemies
     enemies = enemies.filter(enemy => {
