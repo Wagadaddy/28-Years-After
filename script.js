@@ -1,3 +1,24 @@
+function resizeCanvas() {
+  const wrapper = document.getElementById('canvasWrapper');
+
+  // set the actual drawing buffer to match display size
+  const displayWidth = wrapper.clientWidth;
+  const displayHeight = wrapper.clientHeight;
+
+  if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+    canvas.width = displayWidth;
+    canvas.height = displayHeight;
+    ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transforms
+    // enable scaling so draw calls match internal dims
+    const scaleX = displayWidth / 800;
+    const scaleY = displayHeight / 600;
+    ctx.scale(scaleX, scaleY);
+  }
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();  // initial call
+
 document.addEventListener("DOMContentLoaded", () => {
   // --- DOM elements ---
   const startMenu = document.getElementById('startMenu');
