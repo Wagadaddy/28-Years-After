@@ -1,94 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Tower Defense Game — 28 Years After</title>
-
-    <style>
-        body {
-            background: #fafafa;
-            color: #111;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-        body.dark {
-            background: #121212;
-            color: #eee;
-        }
-        header {
-            padding: 10px;
-            font-size: 24px;
-        }
-        #nightModeToggle {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 6px 12px;
-            cursor: pointer;
-        }
-        #startMenu {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            padding: 20px;
-        }
-        .mapButton {
-            padding: 8px;
-            cursor: pointer;
-        }
-        .selected {
-            background: #4CAF50;
-            color: white;
-        }
-        #gameContainer {
-            display: none;
-            position: relative;
-        }
-        canvas {
-            border: 2px solid #444;
-            margin-top: 10px;
-        }
-        #status {
-            margin-top: 8px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tower Defense Game</title>
+<style>
+    body { margin:0; padding:0; font-family: Arial; background: #f0f0f0; transition: background 0.3s;}
+    body.dark { background:#333; color:#fff; }
+    #startMenu { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:flex; justify-content:center; align-items:center; z-index:1000;}
+    #startMenuContent { background:#fff; padding:40px; border-radius:10px; text-align:center; box-shadow:0 0 20px rgba(0,0,0,0.5);}
+    body.dark #startMenuContent { background:#444; color:#fff;}
+    #mapSelection { margin-bottom:20px;}
+    .mapButton { display:block; width:200px; margin:5px auto; padding:8px; cursor:pointer; background:#2196F3; color:#fff; border:none; border-radius:5px;}
+    .mapButton:hover { background:#1976D2;}
+    .mapButton.selected { background:#FF9800;}
+    #startMenu button#startGame { padding:10px 20px; margin-top:10px; font-size:1.2em; cursor:pointer; border:none; border-radius:5px; background:#4CAF50; color:#fff;}
+    #startGame:hover { background:#45a049;}
+    #nightModeToggle { position:fixed; top:10px; right:10px; padding:5px 10px; cursor:pointer; border:none; border-radius:5px; background:#333; color:#fff; z-index:1001;}
+    body.dark #nightModeToggle { background:#fff; color:#333;}
+    #gameContainer { display:none; position:relative;}
+    #gameContainer.active { display:block;}
+    #gameCanvas { border:2px solid #333; background:#90EE90; }
+    body.dark #gameCanvas { background:#2E8B57; border-color:#fff;}
+    #ui { position:absolute; top:10px; left:10px; background:rgba(255,255,255,0.8); padding:10px; border-radius:5px;}
+    body.dark #ui { background:rgba(0,0,0,0.8); color:#fff;}
+    #stats span { display:block; margin-bottom:5px; }
+    #towerSelect { margin-top:10px; }
+    #towerSelect button { display:block; margin-bottom:5px; width:100px; }
+</style>
 </head>
-
 <body>
-    <header>
-        <span>Tower Defense Game — 28 Years After</span>
-        <button id="nightModeToggle">🌙 Night Mode</button>
-    </header>
-
-    <div id="startMenu">
-        <div>
-            <strong>Select Map:</strong><br />
-            <button class="mapButton" id="map1">River Path</button>
-            <button class="mapButton" id="map2">Full Map</button>
-            <button class="mapButton" id="map3">Heartbeat</button>
+<button id="nightModeToggle">🌙 Day/Night</button>
+<div id="startMenu">
+    <div id="startMenuContent">
+        <h1>Tower Defense Game</h1>
+        <div id="mapSelection">
+            <h2>Select Map</h2>
+            <button id="map1" class="mapButton">River Path</button>
+            <button id="map2" class="mapButton">Full Map</button>
+            <button id="map3" class="mapButton">Heartbeat</button>
         </div>
         <button id="startGame" disabled>Start Game</button>
-        <hr />
-        <div>
-            <button id="rifleTower">Rifle Tower ($50)</button>
-            <button id="sniperTower">Sniper Tower ($100)</button>
+        <div id="towerSelect">
+            <button id="rifleTower" data-cost="50">Rifle Tower ($50)</button>
+            <button id="sniperTower" data-cost="100">Sniper Tower ($100)</button>
         </div>
     </div>
-
-    <div id="gameContainer">
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
-        <div id="status">
-            Lives: <span id="lives">20</span> |
-            Money: $<span id="money">100</span> |
-            Wave: <span id="wave">1</span> |
-            Score: <span id="score">0</span>
+</div>
+<div id="gameContainer">
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div id="ui">
+        <div id="stats">
+            <span id="lives">Lives: 20</span>
+            <span id="money">Money: $100</span>
+            <span id="wave">Wave: 1</span>
+            <span id="score">Score: 0</span>
         </div>
         <button id="startWave">Start Wave</button>
     </div>
-
-    <script src="script.js" defer></script>
+</div>
+<script src="script.js" defer></script>
 </body>
 </html>
