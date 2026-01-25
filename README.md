@@ -32,7 +32,7 @@ A single-page **tower defense game** built with **HTML and JavaScript**. Defend 
 
 ### Main Menu
 
-![Main Menu](Mainmenu.png)
+![Main Menu](MainmenuDay.png)
 
 ### Full Map Gameplay
 
