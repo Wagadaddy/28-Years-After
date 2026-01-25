@@ -1,123 +1,134 @@
-28-Years-After
 
-A single-page tower defense game built with HTML, CSS, and JavaScript. Defend your base by placing towers and stopping waves of enemies across multiple maps.
+# 28 Years After
 
-Features
+A single-page **tower defense game** built with **HTML and JavaScript**. Defend your base by placing towers and stopping waves of enemies across multiple maps.
 
-Classic tower defense gameplay
+---
 
-Place towers to defend against enemy waves
+## Features
 
-Two tower types: Rifle Tower and Sniper Tower
+* Classic tower defense gameplay
+* Place towers to defend against enemy waves
+* Two tower types:
 
-Three maps with unique paths:
+  * **Rifle Tower**
+  * **Sniper Tower**
+* Three maps with unique paths:
 
-River Path – meandering left-to-right path
+  * **River Path** – meandering left-to-right path
+  * **Full Map** – path covering the entire map area
+  * **Heartbeat** – ECG-style path with sharp peaks and valleys
+* Start menu with map selection
+* Night mode toggle for dark theme
+* Real-time game loop with canvas rendering
+* Earn money by defeating enemies to buy more towers
+* Start new waves at any time, including overlapping waves
+* All gameplay visuals are rendered via the HTML5 <canvas> making JavaScript the single source of truth
+* Minimising CSS reduces complexity and keeps the focus on game logic, performance, and mechanics
 
-Full Map – path covering the entire map area
+---
 
-Heartbeat – ECG-style path with sharp peaks and valleys
+## Screenshots
 
-Start menu with map selection
+### Main Menu
 
-Night mode toggle for dark theme
+![Main Menu](Mainmenu.png)
 
-Real-time game loop with canvas rendering
+### Full Map Gameplay
 
-Earn money by defeating enemies to buy more towers
+![Full Map Gameplay](FullmapDay.png)
 
-Start new waves at any time, including overlapping waves
+### Heartbeat Map (Rage Mode)
 
-How to Play
+![Heartbeat Map Rage Mode On Gameplay](HeartbeatRage.png)
 
-Select a map from the start menu.
 
-Click Start Game to begin.
+## How to Play
 
-Select a tower type and click on valid areas of the map to place it (cannot be placed on paths).
+1. Select a map from the start menu.
+2. Click **Start Game** to begin.
+3. Select a tower type and click on the map to place it
+4. Click **Start Wave** to spawn enemies.
+5. Defend your base and prevent enemies from reaching the end.
+6. Earn money by defeating enemies and use it to purchase more towers.
 
-Click Start Wave to spawn enemies.
+---
 
-Defend your base and prevent enemies from reaching the end.
+## Controls
 
-Earn money by defeating enemies to purchase more towers.
+* Click map buttons to select a map before starting
+* Click **Rifle Tower** or **Sniper Tower** to select a tower type
+* Click on the canvas to place a tower
+* Use the **Night Mode** toggle (top-right) to switch themes
+* Click **Start Wave** to spawn a new wave at any time
 
-Controls
+---
 
-Click map buttons to select a map before starting.
+## Running the Game
 
-Click Rifle Tower or Sniper Tower to select a tower type.
+Open `index.html` in a modern web browser.
 
-Click on the canvas to place a tower.
+---
 
-Use the Night Mode toggle at the top right to switch themes.
+## Development Notes
 
-Click Start Wave to spawn a new wave at any time.
+### Enemy Class
 
-Running the Game
+* Moves along the selected path using linear interpolation
+* Speed and health scale with wave number
+* Every 5th enemy in a wave:
 
-Open index.html in a web browser.
+  * Moves faster
+  * Changes color
+* Reduces player lives if it reaches the end
 
-Or serve the folder with a local HTTP server:
+### Tower Class
 
-python3 -m http.server
+* **Rifle Tower**
 
-Development Notes
+  * Medium range
+  * Fast attack speed
+  * Lower damage
+  
+* **Sniper Tower**
 
-Enemy Class
+  * Long range
+  * Slower attack speed
+  * Higher damage
+* Automatically targets the first enemy within range
+* Spawns projectiles toward the target
 
-Moves along the selected path using linear interpolation.
+### Projectile Class
 
-Speed and health scale with wave number.
+* Moves toward its target enemy at a fixed speed
+* Damages the enemy upon impact
+* Destroys itself after hitting
+* Rewards the player with money and score if the enemy is killed
 
-Every 5th enemy in a wave moves faster and changes color.
+### Wave System
 
-Reduces player lives if it reaches the end.
+* Waves spawn enemies over time using `setInterval`
+* Multiple waves can be started without waiting for previous waves to finish
 
-Tower Class
+### Game Loop
 
-Rifle Tower: medium range, fast attack, lower damage.
+* Runs using `requestAnimationFrame` for smooth rendering
+* Updates enemies, towers, projectiles, and UI each frame
 
-Sniper Tower: long range, slower attack, higher damage.
+### UI Updates
 
-Automatically targets the first enemy within range and spawns projectiles.
+* Tracks lives, money, score, wave, and high score in real time
+* High score automatically updates if the current score exceeds it
 
-Projectile Class
+---
 
-Moves toward its target enemy at a fixed speed.
+## AI Assistance
 
-Damages enemy upon impact; destroys itself after hitting.
+This project was developed with assistance from AI tools (Open Ai's ChatGPT and the Google Chrome Web Tools), which were used to:
 
-Rewards player money and score if enemy is killed.
+* Review and debug JavaScript code, including issues with enemy spawning and wave handling
+* Generate structured documentation and README content
+* Provide explanations and guidance for implementing overlapping waves, enemy scaling, and UI updates
 
-Wave System
+AI was used as a **collaborative development assistant** to streamline development, clarify logic, and enhance readability. All final code and design decisions were made and implemented by the developer.
 
-Waves spawn enemies over time using setInterval.
-
-Multiple waves can be started without waiting for previous waves to finish.
-
-Game Loop
-
-Runs with requestAnimationFrame for smooth rendering.
-
-Updates enemies, towers, projectiles, and UI each frame.
-
-UI Updates
-
-Tracks lives, money, score, wave, and highscore in real-time.
-
-Highscore automatically updates if current score exceeds it.
-
-AI Assistance
-
-This project was developed with assistance from AI tools (OpenAI’s ChatGPT), which were used to:
-
-Review and debug JavaScript code, identifying issues with enemy spawning and wave handling.
-
-Suggest improvements to the game loop, tower targeting, and wave mechanics.
-
-Generate structured documentation and README content.
-
-Provide clear explanations and guidance for implementing overlapping waves, enemy scaling, and UI updates.
-
-AI was used as a collaborative assistant to streamline development, clarify logic, and enhance readability, but all code and design decisions were finalized and implemented by the developer.
